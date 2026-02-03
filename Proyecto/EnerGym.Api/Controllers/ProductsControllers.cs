@@ -20,3 +20,4 @@ namespace EnerGym.Api.Controllers
         }
     }
 }
+
