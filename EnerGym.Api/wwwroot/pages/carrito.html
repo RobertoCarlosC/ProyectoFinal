@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carrito – EnerGym</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .cart-img {
+      width: 60px; height: 60px;
+      object-fit: cover;
+      border: 1px solid var(--borde);
+      border-radius: 2px;
+    }
+
+    .product-name-cell {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .product-name-cell .name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--blanco);
+    }
+
+    .btn-remove {
+      background: transparent;
+      border: none;
+      color: var(--texto2);
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+      padding: 4px;
+    }
+
+    .btn-remove:hover { color: var(--rojo); }
+
+    /* Modal confirmación */
+    #modal-confirm {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #modal-confirm.show { display: flex; }
+
+    .modal-box {
+      background: var(--gris);
+      border: 1px solid var(--borde);
+      padding: 2.5rem;
+      max-width: 480px;
+      width: 90%;
+    }
+
+    .modal-box h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      color: var(--blanco);
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-box p { color: var(--texto2); font-size: 0.95rem; margin-bottom: 2rem; }
+  </style>
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+
+  <div class="page-header">
+    <div class="container">
+      <p class="section-label">Mi Carrito</p>
+      <h1 class="section-title">Tu <span style="color:var(--naranja)">Selección</span></h1>
+    </div>
+  </div>
+
+  <div class="container pb-5">
+    <div class="row g-4" id="carrito-content">
+      <div class="col-12 text-center py-5">
+        <div class="spinner-border text-warning" role="status"></div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="modal-confirm">
+    <div class="modal-box">
+      <h3>Confirmar Pedido</h3>
+      <p>¿Estás seguro de que quieres realizar este pedido? Se procesará el pago y se reducirá el stock.</p>
+      <div id="modal-resumen" style="background:var(--gris2);border:1px solid var(--borde);padding:1rem;margin-bottom:1.5rem;font-size:0.9rem;"></div>
+      <div style="display:flex;gap:1rem;">
+        <button onclick="cerrarModal()" class="btn-dark-sm" style="flex:1;padding:0.7rem;">Cancelar</button>
+        <button onclick="confirmarPedido()" class="btn-fire" style="clip-path:none;border-radius:2px;flex:1;" id="btn-confirmar-final">
+          ✓ Confirmar Pedido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="modal-success" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:2000;align-items:center;justify-content:center;">
+    <div class="modal-box" style="text-align:center;">
+      <div style="font-size:4rem;margin-bottom:1rem;">🎉</div>
+      <h3>¡Pedido Realizado!</h3>
+      <p id="success-text">Tu pedido ha sido confirmado correctamente.</p>
+      <a href="/pages/tienda.html" class="btn-fire" style="clip-path:none;border-radius:2px;">Seguir Comprando</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container text-center">
+      <div class="footer-brand">Ener<span>Gym</span></div>
+      <p class="footer-text mt-2">© 2025 EnerGym. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    window._activePage = 'carrito';
+    injectNavbar('carrito');
+
+    if (!getSession()) window.location.href = '/pages/login.html';
+
+    let carritoData = null;
+
+    async function loadCarrito() {
+      const user = getSession();
+      if (!user) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/carrito/${user.idUsuario}`);
+        carritoData = await res.json();
+        renderCarrito();
+      } catch (e) {
+        document.getElementById('carrito-content').innerHTML = `
+          <div class="col-12">
+            <div class="empty-state">
+              <div class="icon">⚠️</div>
+              <h3>Error de conexión</h3>
+            </div>
+          </div>`;
+      }
+    }
+
+    function renderCarrito() {
+      const content = document.getElementById('carrito-content');
+
+      if (!carritoData.items || carritoData.items.length === 0) {
+        content.innerHTML = `
+          <div class="col-12">
+            <div class="empty-state">
+              <div class="icon">🛒</div>
+              <h3>Tu carrito está vacío</h3>
+              <p style="margin:1rem 0;">Añade productos desde la tienda</p>
+              <a href="/pages/tienda.html" class="btn-fire" style="clip-path:none;border-radius:2px;">Ir a la Tienda</a>
+            </div>
+          </div>`;
+        return;
+      }
+
+      const itemsHtml = carritoData.items.map(item => `
+        <tr>
+          <td>
+            <div class="product-name-cell">
+              <img src="${item.imagen || 'https://via.placeholder.com/60x60/1a1a1a/ff5500?text=EG'}"
+                   alt="${item.nombreProducto}" class="cart-img"
+                   onerror="this.src='https://via.placeholder.com/60x60/1a1a1a/ff5500?text=EG'">
+              <span class="name">${item.nombreProducto}</span>
+            </div>
+          </td>
+          <td>${formatPrice(item.precio)}</td>
+          <td>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="cambiarCantidad(${item.id}, ${item.cantidad - 1})">−</button>
+              <span class="qty-num">${item.cantidad}</span>
+              <button class="qty-btn" onclick="cambiarCantidad(${item.id}, ${item.cantidad + 1})">+</button>
+            </div>
+          </td>
+          <td style="color:var(--naranja);font-family:'Bebas Neue',sans-serif;font-size:1.3rem;">
+            ${formatPrice(item.subtotal)}
+          </td>
+          <td>
+            <button class="btn-remove" onclick="eliminarItem(${item.id})" title="Eliminar">✕</button>
+          </td>
+        </tr>
+      `).join('');
+
+      content.innerHTML = `
+        <div class="col-lg-8">
+          <div style="background:var(--gris);border:1px solid var(--borde);">
+            <div style="padding:1.5rem;border-bottom:1px solid var(--borde);">
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--texto2);">
+                ${carritoData.items.length} producto${carritoData.items.length !== 1 ? 's' : ''} en tu carrito
+              </span>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="table-dark-custom" style="min-width:600px;">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>${itemsHtml}</tbody>
+              </table>
+            </div>
+          </div>
+          <div class="mt-3">
+            <a href="/pages/tienda.html" style="color:var(--texto2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.2s;" onmouseover="this.style.color='var(--naranja)'" onmouseout="this.style.color='var(--texto2)'">
+              ← Seguir Comprando
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="order-summary">
+            <div class="order-summary-title">Resumen</div>
+            ${carritoData.items.map(i => `
+              <div class="summary-row">
+                <span>${i.nombreProducto} x${i.cantidad}</span>
+                <span>${formatPrice(i.subtotal)}</span>
+              </div>
+            `).join('')}
+            <div class="summary-total">
+              <span>Total</span>
+              <span>${formatPrice(carritoData.total)}</span>
+            </div>
+            <button onclick="abrirModal()" class="btn-fire mt-4 w-100" style="clip-path:none;border-radius:2px;">
+              Realizar Pedido
+            </button>
+            <p style="color:var(--texto2);font-size:0.75rem;text-align:center;margin-top:1rem;">
+              🔒 Pago seguro garantizado
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    async function cambiarCantidad(id, nuevaCantidad) {
+      try {
+        const res = await fetch(`${API_BASE}/carrito/item/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cantidad: nuevaCantidad })
+        });
+        if (res.ok) {
+          await loadCarrito();
+          await updateCartBadge();
+          injectNavbar('carrito');
+        }
+      } catch (e) {
+        showToast('Error al actualizar cantidad', 'error');
+      }
+    }
+
+    async function eliminarItem(id) {
+      try {
+        const res = await fetch(`${API_BASE}/carrito/item/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          showToast('Producto eliminado del carrito', 'info');
+          await loadCarrito();
+          await updateCartBadge();
+          injectNavbar('carrito');
+        }
+      } catch (e) {
+        showToast('Error al eliminar producto', 'error');
+      }
+    }
+
+    function abrirModal() {
+      if (!carritoData || !carritoData.items.length) return;
+      const resumen = document.getElementById('modal-resumen');
+      resumen.innerHTML = `
+        <div style="color:var(--texto2);margin-bottom:0.5rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;font-size:0.8rem;text-transform:uppercase;">
+          ${carritoData.items.length} producto${carritoData.items.length !== 1 ? 's' : ''}
+        </div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--naranja);letter-spacing:1px;">
+          Total: ${formatPrice(carritoData.total)}
+        </div>
+      `;
+      document.getElementById('modal-confirm').classList.add('show');
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal-confirm').classList.remove('show');
+    }
+
+    async function confirmarPedido() {
+      const user = getSession();
+      const btn = document.getElementById('btn-confirmar-final');
+      btn.textContent = 'Procesando...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`${API_BASE}/pedidos/confirmar`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idUsuario: user.idUsuario })
+        });
+
+        const data = await res.json();
+        cerrarModal();
+
+        if (!res.ok) {
+          showToast(data.error || 'Error al confirmar pedido', 'error');
+          btn.textContent = '✓ Confirmar Pedido';
+          btn.disabled = false;
+          return;
+        }
+
+        document.getElementById('success-text').textContent =
+          `Pedido #${data.idPedido} confirmado. Total: ${formatPrice(data.total)}`;
+        document.getElementById('modal-success').style.display = 'flex';
+
+        localStorage.removeItem('energym_cart_count');
+      } catch (e) {
+        showToast('Error de conexión', 'error');
+        btn.textContent = '✓ Confirmar Pedido';
+        btn.disabled = false;
+      }
+    }
+
+    // Cerrar modal al hacer click fuera
+    document.getElementById('modal-confirm').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) cerrarModal();
+    });
+
+    loadCarrito();
+  </script>
+</body>
+</html>
