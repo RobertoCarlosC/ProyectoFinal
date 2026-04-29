@@ -195,10 +195,8 @@ namespace EnerGym.Controllers
                     return Unauthorized(new { error = "No tienes permisos de administrador." });
 
                 var cmd = new SqlCommand(@"
-                    SELECT u.IdUsuario, u.Nombre, u.Email, u.Telefono, u.Direccion, u.Ciudad, 
-                           u.CodigoPostal, u.FechaRegistro, u.IdRol, r.Nombre AS NombreRol
+                    SELECT u.IdUsuario, u.Nombre, u.Email, u.FechaRegistro, u.IdRol
                     FROM Usuarios u
-                    LEFT JOIN Roles r ON u.IdRol = r.IdRol
                     ORDER BY u.FechaRegistro DESC",
                     conn);
 
@@ -211,12 +209,12 @@ namespace EnerGym.Controllers
                         idUsuario = (int)reader["IdUsuario"],
                         nombre = reader["Nombre"].ToString(),
                         email = reader["Email"].ToString(),
-                        telefono = reader["Telefono"] == DBNull.Value ? "" : reader["Telefono"].ToString(),
-                        direccion = reader["Direccion"] == DBNull.Value ? "" : reader["Direccion"].ToString(),
-                        ciudad = reader["Ciudad"] == DBNull.Value ? "" : reader["Ciudad"].ToString(),
-                        codigoPostal = reader["CodigoPostal"] == DBNull.Value ? "" : reader["CodigoPostal"].ToString(),
+                        telefono = "",
+                        direccion = "",
+                        ciudad = "",
+                        codigoPostal = "",
                         fechaRegistro = reader["FechaRegistro"],
-                        rol = reader["NombreRol"].ToString(),
+                        rol = (int)reader["IdRol"] == 1 ? "admin" : "usuario",
                         idRol = (int)reader["IdRol"]
                     });
                 }
@@ -246,19 +244,13 @@ namespace EnerGym.Controllers
 
                 var cmd = new SqlCommand(@"
                     UPDATE Usuarios
-                    SET Nombre = @Nombre, Email = @Email, IdRol = @IdRol,
-                        Telefono = @Telefono, Direccion = @Direccion, 
-                        Ciudad = @Ciudad, CodigoPostal = @CodigoPostal
+                    SET Nombre = @Nombre, Email = @Email, IdRol = @IdRol
                     WHERE IdUsuario = @IdUsuario",
                     conn);
 
                 cmd.Parameters.AddWithValue("@Nombre", dto.Nombre.Trim());
                 cmd.Parameters.AddWithValue("@Email", dto.Email.Trim().ToLower());
                 cmd.Parameters.AddWithValue("@IdRol", dto.IdRol);
-                cmd.Parameters.AddWithValue("@Telefono", (object?)dto.Telefono ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@Direccion", (object?)dto.Direccion ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@Ciudad", (object?)dto.Ciudad ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@CodigoPostal", (object?)dto.CodigoPostal ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
 
                 int filas = cmd.ExecuteNonQuery();

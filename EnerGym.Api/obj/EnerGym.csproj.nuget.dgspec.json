@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Grupo Levante\\Downloads\\ProyectoFinal_v3_sinComentarios\\ProyectoFinal_final\\Proyecto\\EnerGym.Api\\EnerGym.csproj": {}
+    "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\EnerGym.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Grupo Levante\\Downloads\\ProyectoFinal_v3_sinComentarios\\ProyectoFinal_final\\Proyecto\\EnerGym.Api\\EnerGym.csproj": {
+    "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\EnerGym.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Grupo Levante\\Downloads\\ProyectoFinal_v3_sinComentarios\\ProyectoFinal_final\\Proyecto\\EnerGym.Api\\EnerGym.csproj",
+        "projectUniqueName": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\EnerGym.csproj",
         "projectName": "EnerGym",
-        "projectPath": "C:\\Users\\Grupo Levante\\Downloads\\ProyectoFinal_v3_sinComentarios\\ProyectoFinal_final\\Proyecto\\EnerGym.Api\\EnerGym.csproj",
+        "projectPath": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\EnerGym.csproj",
         "packagesPath": "C:\\Users\\Grupo Levante\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Grupo Levante\\Downloads\\ProyectoFinal_v3_sinComentarios\\ProyectoFinal_final\\Proyecto\\EnerGym.Api\\obj\\",
+        "outputPath": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Grupo Levante\\AppData\\Roaming\\NuGet\\NuGet.Config"
