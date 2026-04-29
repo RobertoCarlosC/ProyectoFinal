@@ -1,0 +1,61 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\wwwroot\\css\\style.css",
+      "PackagePath": "staticwebassets\\css\\style.css"
+    },
+    {
+      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\wwwroot\\js\\app.js",
+      "PackagePath": "staticwebassets\\js\\app.js"
+    },
+    {
+      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\admin.html",
+      "PackagePath": "staticwebassets\\pages\\admin.html"
+    },
+    {
+      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\carrito.html",
+      "PackagePath": "staticwebassets\\pages\\carrito.html"
+    },
+    {
+      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\checkout.html",
+      "PackagePath": "staticwebassets\\pages\\checkout.html"
+    },
+    {
+      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\login.html",
+      "PackagePath": "staticwebassets\\pages\\login.html"
+    },
+    {
+      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\perfil.html",
+      "PackagePath": "staticwebassets\\pages\\perfil.html"
+    },
+    {
+      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\registro.html",
+      "PackagePath": "staticwebassets\\pages\\registro.html"
+    },
+    {
+      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymOf\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\tienda.html",
+      "PackagePath": "staticwebassets\\pages\\tienda.html"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.EnerGym.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.EnerGym.props",
+      "PackagePath": "build\\EnerGym.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.EnerGym.props",
+      "PackagePath": "buildMultiTargeting\\EnerGym.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.EnerGym.props",
+      "PackagePath": "buildTransitive\\EnerGym.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

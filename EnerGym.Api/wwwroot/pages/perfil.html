@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi Perfil – EnerGym</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+
+  
+  <section class="py-5">
+    <div class="container">
+      <div class="mb-4">
+        <p class="section-label">Usuario</p>
+        <h2 class="section-title">Mi <span style="color:var(--naranja)">Perfil</span></h2>
+      </div>
+
+      <div class="row g-4">
+        
+        <div class="col-lg-8">
+          <div style="background:var(--gris);border:1px solid var(--borde);border-radius:8px;padding:2rem;margin-bottom:2rem;">
+            <h4 style="margin-bottom:1.5rem;">Información Personal</h4>
+            
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Nombre</label>
+                <input id="nombre" type="text" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
+              </div>
+              <div class="col-md-6">
+                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Email</label>
+                <input id="email" type="email" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
+              </div>
+              <div class="col-md-6">
+                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Teléfono</label>
+                <input id="telefono" type="tel" placeholder="+34 600 000 000" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
+              </div>
+              <div class="col-md-6">
+                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Dirección</label>
+                <input id="direccion" type="text" placeholder="Calle, nº, puerta" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
+              </div>
+              <div class="col-md-6">
+                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Ciudad</label>
+                <input id="ciudad" type="text" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
+              </div>
+              <div class="col-md-6">
+                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Código Postal</label>
+                <input id="codigoPostal" type="text" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
+              </div>
+            </div>
+
+            <div style="margin-top:2rem;">
+              <button onclick="guardarPerfil()" class="btn-fire">Guardar Cambios</button>
+            </div>
+          </div>
+
+          
+          <div style="background:var(--gris);border:1px solid var(--borde);border-radius:8px;padding:2rem;">
+            <h4 style="margin-bottom:1.5rem;">Cambiar Contraseña</h4>
+            
+            <div class="mb-3">
+              <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Contraseña Actual</label>
+              <input id="pwd-actual" type="password" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
+            </div>
+            <div class="mb-3">
+              <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Nueva Contraseña</label>
+              <input id="pwd-nueva" type="password" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
+            </div>
+            <div class="mb-3">
+              <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Confirmar Nueva Contraseña</label>
+              <input id="pwd-confirmar" type="password" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
+            </div>
+
+            <button onclick="cambiarContraseña()" class="btn-fire">Cambiar Contraseña</button>
+          </div>
+        </div>
+
+        
+        <div class="col-lg-4">
+          <div style="background:var(--gris);border:1px solid var(--borde);border-radius:8px;padding:2rem;position:sticky;top:100px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;color:var(--texto2);font-weight:600;margin-bottom:1.5rem;">Mis Pedidos</div>
+
+            <div id="pedidos-lista" style="max-height:600px;overflow-y:auto;">
+              <div class="spinner-border" role="status" style="color:var(--naranja);"></div>
+            </div>
+
+            <button onclick="irATienda()" class="btn-outline-fire w-100 mt-3">Volver a la Tienda</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <div id="toast-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/app.js"></script>
+
+  <script>
+    window._activePage = 'perfil';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      injectNavbar('perfil');
+      const user = getSession();
+      if (!user) {
+        window.location.href = '/pages/login.html';
+        return;
+      }
+      await cargarPerfil();
+      await cargarPedidos();
+    });
+
+    async function cargarPerfil() {
+      try {
+        const user = getSession();
+        const res = await fetch(`/api/usuarios/${user.idUsuario}/perfil`);
+        if (!res.ok) throw new Error();
+        const perfil = await res.json();
+
+        document.getElementById('nombre').value = perfil.nombre || '';
+        document.getElementById('email').value = perfil.email || '';
+        document.getElementById('telefono').value = perfil.telefono || '';
+        document.getElementById('direccion').value = perfil.direccion || '';
+        document.getElementById('ciudad').value = perfil.ciudad || '';
+        document.getElementById('codigoPostal').value = perfil.codigoPostal || '';
+      } catch (e) {
+        showToast('Error al cargar el perfil', 'error');
+      }
+    }
+
+    async function cargarPedidos() {
+      try {
+        const user = getSession();
+        const res = await fetch(`/api/usuarios/${user.idUsuario}/pedidos`);
+        if (!res.ok) throw new Error();
+        const pedidos = await res.json();
+
+        const lista = document.getElementById('pedidos-lista');
+        if (pedidos.length === 0) {
+          lista.innerHTML = '<p style="color:var(--texto2);text-align:center;">No tienes pedidos aún</p>';
+          return;
+        }
+
+        let html = '';
+        pedidos.forEach(p => {
+          const estadoBadge = `<span style="background:${p.estado === 'Entregado' ? '#22c55e' : 'var(--naranja)'};color:var(--blanco);padding:0.25rem 0.6rem;border-radius:3px;font-size:0.75rem;">${p.estado}</span>`;
+          html += `
+            <div style="background:var(--oscuro);border:1px solid var(--borde);border-radius:6px;padding:1rem;margin-bottom:1rem;cursor:pointer;" onclick="verDetallePedido(${p.idPedido})">
+              <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:0.5rem;">
+                <strong style="font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;">#${p.idPedido}</strong>
+                ${estadoBadge}
+              </div>
+              <div style="color:var(--texto2);font-size:0.85rem;margin-bottom:0.5rem;">${new Date(p.fecha).toLocaleDateString('es-ES')}</div>
+              <div style="font-weight:700;color:var(--naranja);">${formatPrice(p.total)}</div>
+            </div>`;
+        });
+
+        lista.innerHTML = html;
+      } catch (e) {
+        showToast('Error al cargar pedidos', 'error');
+      }
+    }
+
+    async function guardarPerfil() {
+      const user = getSession();
+      const datos = {
+        idUsuario: user.idUsuario,
+        nombre: document.getElementById('nombre').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        telefono: document.getElementById('telefono').value.trim() || null,
+        direccion: document.getElementById('direccion').value.trim() || null,
+        ciudad: document.getElementById('ciudad').value.trim() || null,
+        codigoPostal: document.getElementById('codigoPostal').value.trim() || null
+      };
+
+      if (!datos.nombre || !datos.email) {
+        showToast('Nombre y Email son obligatorios', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/usuarios/${user.idUsuario}/editar-perfil`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(datos)
+        });
+
+        if (!res.ok) {
+          const error = await res.json();
+          throw new Error(error.error || 'Error al guardar');
+        }
+
+        showToast('Perfil actualizado correctamente ✓', 'success');
+        setSession({ ...user, nombre: datos.nombre, email: datos.email });
+        injectNavbar('perfil');
+      } catch (e) {
+        showToast(e.message, 'error');
+      }
+    }
+
+    async function cambiarContraseña() {
+      const user = getSession();
+      const actual = document.getElementById('pwd-actual').value.trim();
+      const nueva = document.getElementById('pwd-nueva').value.trim();
+      const confirmar = document.getElementById('pwd-confirmar').value.trim();
+
+      if (!actual || !nueva || !confirmar) {
+        showToast('Todos los campos son obligatorios', 'error');
+        return;
+      }
+
+      if (nueva !== confirmar) {
+        showToast('Las contraseñas no coinciden', 'error');
+        return;
+      }
+
+      if (nueva.length < 6) {
+        showToast('La contraseña debe tener al menos 6 caracteres', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/usuarios/${user.idUsuario}/cambiar-contraseña`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            idUsuario: user.idUsuario,
+            contraseñaActual: actual,
+            contraseñaNueva: nueva,
+            confirmarContraseña: confirmar
+          })
+        });
+
+        if (!res.ok) {
+          const error = await res.json();
+          throw new Error(error.error || 'Error al cambiar');
+        }
+
+        showToast('Contraseña cambiada correctamente ✓', 'success');
+        document.getElementById('pwd-actual').value = '';
+        document.getElementById('pwd-nueva').value = '';
+        document.getElementById('pwd-confirmar').value = '';
+      } catch (e) {
+        showToast(e.message, 'error');
+      }
+    }
+
+    function verDetallePedido(idPedido) {
+      const user = getSession();
+      alert(`Detalles del pedido #${idPedido}\n\nFuncionalidad de detalle en desarrollo`);
+      // window.location.href = `/pages/pedido-detalle.html?id=${idPedido}`;
+    }
+
+    function irATienda() {
+      window.location.href = '/pages/tienda.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout – EnerGym</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+
+  
+  <section class="py-5">
+    <div class="container">
+      <div class="mb-4">
+        <p class="section-label">Finalizar Compra</p>
+        <h2 class="section-title">Pago y <span style="color:var(--naranja)">Confirmación</span></h2>
+      </div>
+
+      <div class="row g-4">
+        
+        <div class="col-lg-8">
+          <div style="background:var(--gris);border:1px solid var(--borde);border-radius:8px;padding:2rem;margin-bottom:2rem;">
+            <h4 style="margin-bottom:1.5rem;">Resumen del Carrito</h4>
+            <div id="checkout-items"></div>
+          </div>
+
+          <div style="background:var(--gris);border:1px solid var(--borde);border-radius:8px;padding:2rem;">
+            <h4 style="margin-bottom:1.5rem;">Detalles de Envío</h4>
+            <div class="mb-3">
+              <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Dirección</label>
+              <input id="direccion" type="text" placeholder="Calle, número, puerta" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Ciudad</label>
+                <input id="ciudad" type="text" placeholder="Madrid" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
+              </div>
+              <div class="col-md-6">
+                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Código Postal</label>
+                <input id="cp" type="text" placeholder="28001" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
+              </div>
+            </div>
+
+            <h4 style="margin-top:2rem;margin-bottom:1.5rem;">Método de Pago</h4>
+            <label style="display:flex;align-items:center;gap:1rem;padding:1rem;background:var(--oscuro);border:2px solid var(--naranja);border-radius:4px;cursor:pointer;">
+              <input type="radio" name="pago" value="tarjeta" checked>
+              <span>💳 Tarjeta de Crédito / Débito</span>
+            </label>
+            <p style="color:var(--texto2);font-size:0.85rem;margin-top:1rem;">
+              ⚠️ Este es un demo. Los pagos se procesan de forma segura.
+            </p>
+          </div>
+        </div>
+
+        
+        <div class="col-lg-4">
+          <div style="background:var(--gris);border:1px solid var(--borde);border-radius:8px;padding:2rem;position:sticky;top:100px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;color:var(--texto2);font-weight:600;margin-bottom:1.5rem;">Resumen de Pago</div>
+
+            <div style="border-top:1px solid var(--borde);border-bottom:1px solid var(--borde);padding:1.5rem 0;margin-bottom:1.5rem;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:0.8rem;">
+                <span style="color:var(--texto2);">Subtotal</span>
+                <span id="checkout-subtotal">0,00 €</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:0.8rem;">
+                <span style="color:var(--texto2);">Envío</span>
+                <span id="checkout-envio">0,00 €</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:0.8rem;">
+                <span style="color:var(--texto2);">Impuestos (21%)</span>
+                <span id="checkout-impuestos">0,00 €</span>
+              </div>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;">
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;">Total</span>
+              <span id="checkout-total" style="font-size:1.8rem;color:var(--naranja);font-weight:700;">0,00 €</span>
+            </div>
+
+            <button id="btn-confirmar" class="btn-fire w-100" onclick="confirmarPedido()">Confirmar Pedido</button>
+            <a href="/pages/carrito.html" class="btn-outline-fire w-100 mt-2">Volver al Carrito</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <div id="modal-exito" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:2000;align-items:center;justify-content:center;">
+    <div style="background:var(--gris);border:1px solid var(--borde);border-radius:8px;padding:3rem;max-width:400px;width:90%;text-align:center;">
+      <div style="font-size:3rem;margin-bottom:1rem;">✅</div>
+      <h2 style="margin-bottom:1rem;">¡Pedido Confirmado!</h2>
+      <p id="exito-mensaje" style="color:var(--texto2);margin-bottom:2rem;"></p>
+      <a href="/pages/tienda.html" class="btn-fire">Seguir Comprando</a>
+      <a href="/pages/perfil.html" class="btn-outline-fire" style="margin-left:0.5rem;">Ver Mis Pedidos</a>
+    </div>
+  </div>
+
+  
+  <div id="toast-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/app.js"></script>
+
+  <script>
+    let carritoData = null;
+
+    window._activePage = 'checkout';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      injectNavbar('checkout');
+      const user = getSession();
+      if (!user) {
+        window.location.href = '/pages/login.html';
+        return;
+      }
+      await cargarDatos();
+    });
+
+    async function cargarDatos() {
+      try {
+        const user = getSession();
+        const resCarrito = await fetch(`/api/carrito/${user.idUsuario}`);
+        if (!resCarrito.ok) throw new Error('Error carrito');
+        carritoData = await resCarrito.json();
+
+        const resPerfil = await fetch(`/api/usuarios/${user.idUsuario}/perfil`);
+        if (resCarrito.ok) {
+          const perfil = await resPerfil.json();
+          document.getElementById('direccion').value = perfil.direccion || '';
+          document.getElementById('ciudad').value = perfil.ciudad || '';
+          document.getElementById('cp').value = perfil.codigoPostal || '';
+        }
+
+        renderCheckout();
+      } catch (e) {
+        showToast('Error al cargar datos', 'error');
+      }
+    }
+
+    function renderCheckout() {
+      if (!carritoData || carritoData.items.length === 0) {
+        document.getElementById('checkout-items').innerHTML = '<p>El carrito está vacío</p>';
+        return;
+      }
+
+      let html = '';
+      carritoData.items.forEach(item => {
+        html += `
+          <div style="display:flex;justify-content:space-between;padding:1rem;border-bottom:1px solid var(--borde);">
+            <div>
+              <div style="font-weight:600;">${item.nombreProducto}</div>
+              <div style="color:var(--texto2);font-size:0.9rem;">Cantidad: ${item.cantidad}</div>
+            </div>
+            <div style="text-align:right;font-weight:600;">${formatPrice(item.subtotal)}</div>
+          </div>`;
+      });
+
+      document.getElementById('checkout-items').innerHTML = html;
+      actualizarTotales();
+    }
+
+    function actualizarTotales() {
+      if (!carritoData) return;
+      const subtotal = carritoData.total || 0;
+      const envio = subtotal > 50 ? 0 : 5.99;
+      const impuestos = (subtotal + envio) * 0.21;
+      const total = subtotal + envio + impuestos;
+
+      document.getElementById('checkout-subtotal').textContent = formatPrice(subtotal);
+      document.getElementById('checkout-envio').textContent = formatPrice(envio);
+      document.getElementById('checkout-impuestos').textContent = formatPrice(impuestos);
+      document.getElementById('checkout-total').textContent = formatPrice(total);
+    }
+
+    async function confirmarPedido() {
+      const user = getSession();
+      const direccion = document.getElementById('direccion').value.trim();
+      const ciudad = document.getElementById('ciudad').value.trim();
+      const cp = document.getElementById('cp').value.trim();
+
+      if (!direccion || !ciudad || !cp) {
+        showToast('Por favor completa los datos de envío', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btn-confirmar');
+      btn.textContent = 'Procesando...';
+      btn.disabled = true;
+
+      try {
+        // Guardar dirección en perfil
+        await fetch(`/api/usuarios/${user.idUsuario}/editar-perfil`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idUsuario: user.idUsuario, nombre: user.nombre, email: user.email, direccion, ciudad, codigoPostal: cp })
+        });
+
+        // Confirmar pedido
+        const res = await fetch(`/api/pedidos/confirmar`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idUsuario: user.idUsuario })
+        });
+
+        if (!res.ok) {
+          const error = await res.json();
+          throw new Error(error.error || 'Error al confirmar');
+        }
+
+        const data = await res.json();
+        document.getElementById('exito-mensaje').innerHTML = `
+          <strong>Pedido #${data.idPedido}</strong><br>
+          Total: <strong>${formatPrice(data.total)}</strong><br>
+          <small style="color:var(--texto2);">Te enviaremos un email con los detalles del pedido</small>`;
+        
+        document.getElementById('modal-exito').style.display = 'flex';
+        localStorage.removeItem('energym_cart_count');
+        await updateCartBadge();
+        injectNavbar('checkout');
+      } catch (e) {
+        showToast(e.message || 'Error al confirmar el pedido', 'error');
+        btn.textContent = 'Confirmar Pedido';
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
