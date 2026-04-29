@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EnerGym – Tienda</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  .tienda-hero {
+    background: var(--charcoal);
+    border-bottom: 1px solid var(--iron);
+    padding: 60px 52px 48px;
+  }
+  .tienda-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .filter-btn {
+    font-family: var(--font-cond);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 9px 20px;
+    border: 1px solid var(--iron);
+    background: none;
+    color: var(--smoke);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover,
+  .filter-btn.active {
+    border-color: var(--red);
+    color: var(--red);
+    background: var(--red-glow);
+  }
+  .tienda-section { padding: 60px 52px; background: var(--black); }
+  .tienda-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1360px;
+    margin: 0 auto;
+  }
+  .loading-msg {
+    grid-column: 1/-1;
+    text-align: center;
+    font-family: var(--font-cond);
+    font-size: 14px;
+    letter-spacing: 0.14em;
+    color: var(--smoke);
+    padding: 60px 0;
+  }
+  @media(max-width:1100px) { .tienda-grid { grid-template-columns: repeat(3,1fr); } }
+  @media(max-width:768px)  { .tienda-grid { grid-template-columns: repeat(2,1fr); } .tienda-hero,.tienda-section { padding-left:24px;padding-right:24px; } }
+  @media(max-width:480px)  { .tienda-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+
+<div class="topbar">
+<div class="topbar-track">
+<span>ENVÍO GRATIS EN PEDIDOS MAYORES A 49€ &nbsp;&#47;&#47;&nbsp; NUEVA COLECCIÓN 2026 &nbsp;&#47;&#47;&nbsp; CALIDAD PREMIUM GARANTIZADA &nbsp;&#47;&#47;&nbsp; ENVÍO GRATIS EN PEDIDOS MAYORES A 49€ &nbsp;&#47;&#47;&nbsp; NUEVA COLECCIÓN 2026 &nbsp;&#47;&#47;&nbsp; CALIDAD PREMIUM GARANTIZADA &nbsp;&#47;&#47;&nbsp;</span>
+<span aria-hidden="true">ENVÍO GRATIS EN PEDIDOS MAYORES A 49€ &nbsp;&#47;&#47;&nbsp; NUEVA COLECCIÓN 2026 &nbsp;&#47;&#47;&nbsp; CALIDAD PREMIUM GARANTIZADA &nbsp;&#47;&#47;&nbsp;</span>
+</div>
+</div>
+
+<header class="navbar">
+<div class="nav-left">
+  <nav>
+    <a href="/index.html">INICIO</a>
+    <a href="/pages/tienda.html">PRODUCTOS</a>
+    <a href="/pages/tienda.html">COLECCIONES</a>
+    <a href="#">NOSOTROS</a>
+  </nav>
+</div>
+<div class="nav-logo"><a href="/index.html"><span>EnerGym</span></a></div>
+<div class="nav-right">
+  <a href="/pages/login.html"><i class="fa-regular fa-user"></i></a>
+  <a href="/pages/login.html"><i class="fa-regular fa-heart"></i></a>
+  <a href="/pages/carrito.html" class="cart-icon">
+    <i class="fa-solid fa-bag-shopping"></i>
+    <span class="cart-count">0</span>
+  </a>
+</div>
+</header>
+
+<div class="tienda-hero">
+  <div class="section-label">// TIENDA</div>
+  <h1 class="section-title" style="margin-bottom:0">TODO EL<br><span>ARSENAL</span></h1>
+  <div class="tienda-filters">
+    <button class="filter-btn active" onclick="filtrar(null, this)">TODOS</button>
+  </div>
+</div>
+
+<section class="tienda-section">
+  <div class="tienda-grid" id="tienda-grid">
+    <div class="loading-msg">CARGANDO PRODUCTOS...</div>
+  </div>
+</section>
+
+
+<footer class="footer">
+<div class="footer-top-bar">
+  <div class="footer-logo"><span>EnerGym</span></div>
+  <div class="social-links">
+    <a href="https://www.instagram.com/energym164"><i class="fa-brands fa-instagram"></i></a>
+    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+  </div>
+</div>
+<div class="footer-divider"></div>
+<div class="footer-bottom">
+  <p>© 2026 ENERGYM. TODOS LOS DERECHOS RESERVADOS.</p>
+  <div class="payment-icons">
+    <i class="fa-brands fa-cc-visa"></i>
+    <i class="fa-brands fa-cc-mastercard"></i>
+    <i class="fa-brands fa-cc-paypal"></i>
+  </div>
+</div>
+</footer>
+
+<script src="../js/app.js"></script>
+<script>
+  updateNavbar();
+  updateCartBadge();
+
+  let todosLosProductos = [];
+  let categoriaActual = null;
+
+  async function cargarProductos() {
+    const user = getSession();
+    const url = user
+      ? `${API_BASE}/productos?idUsuario=${user.idUsuario}`
+      : `${API_BASE}/productos`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error();
+      todosLosProductos = await res.json();
+      cargarCategorias();
+      renderProductos(todosLosProductos);
+    } catch(e) {
+      document.getElementById('tienda-grid').innerHTML =
+        '<div class="loading-msg">Error al cargar productos. Verifica que la API esté activa.</div>';
+    }
+  }
+
+  async function cargarCategorias() {
+    try {
+      const res = await fetch(`${API_BASE}/categorias`);
+      if (!res.ok) return;
+      const cats = await res.json();
+      const filters = document.querySelector('.tienda-filters');
+      cats.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.textContent = (c.nombre || c.Nombre).toUpperCase();
+        btn.onclick = () => filtrar(c.idCategoria || c.IdCategoria, btn);
+        filters.appendChild(btn);
+      });
+    } catch(e) {}
+  }
+
+  function filtrar(idCategoria, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    categoriaActual = idCategoria;
+    const filtrados = idCategoria
+      ? todosLosProductos.filter(p => (p.idCategoria || p.IdCategoria) === idCategoria)
+      : todosLosProductos;
+    renderProductos(filtrados);
+  }
+
+  function renderProductos(productos) {
+    const grid = document.getElementById('tienda-grid');
+    if (!productos.length) {
+      grid.innerHTML = '<div class="loading-msg">No hay productos en esta categoría.</div>';
+      return;
+    }
+    grid.innerHTML = productos.map(p => renderProductCard(p)).join('');
+  }
+
+  cargarProductos();
+</script>
+</body>
+</html>
