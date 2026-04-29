@@ -166,7 +166,14 @@ namespace EnerGym.Controllers
                 if (!EsAdmin(conn, idAdmin))
                     return Unauthorized(new { error = "No tienes permisos de administrador." });
 
-                
+                var delLikes = new SqlCommand("DELETE FROM LikesProductos WHERE IdProducto = @IdProducto", conn);
+                delLikes.Parameters.AddWithValue("@IdProducto", idProducto);
+                delLikes.ExecuteNonQuery();
+
+                var delCarrito = new SqlCommand("DELETE FROM CarritoProductos WHERE IdProducto = @IdProducto", conn);
+                delCarrito.Parameters.AddWithValue("@IdProducto", idProducto);
+                delCarrito.ExecuteNonQuery();
+
                 var cmd = new SqlCommand("DELETE FROM Productos WHERE IdProducto = @IdProducto", conn);
                 cmd.Parameters.AddWithValue("@IdProducto", idProducto);
                 int filas = cmd.ExecuteNonQuery();
