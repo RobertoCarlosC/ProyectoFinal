@@ -4,99 +4,91 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mi Perfil – EnerGym</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="page-account-body">
   <div id="navbar-placeholder"></div>
 
-  
-  <section class="py-5">
-    <div class="container">
-      <div class="mb-4">
-        <p class="section-label">Usuario</p>
-        <h2 class="section-title">Mi <span style="color:var(--naranja)">Perfil</span></h2>
+  <main class="page-account">
+    <header class="page-header page-header--account">
+      <p class="section-label">Usuario</p>
+      <h1 class="section-title section-title--cart"><span class="first-word">Mi</span> <span class="second-word">Perfil</span></h1>
+    </header>
+
+    <div class="account-layout">
+      <div class="account-main">
+        <section class="account-panel">
+          <h2 class="account-panel__title">Información personal</h2>
+
+          <div class="account-form-grid">
+            <div>
+              <label class="form-label-dark" for="nombre">Nombre</label>
+              <input id="nombre" type="text" class="form-control-dark" autocomplete="name">
+            </div>
+            <div>
+              <label class="form-label-dark" for="email">Email</label>
+              <input id="email" type="email" class="form-control-dark" autocomplete="email">
+            </div>
+            <div>
+              <label class="form-label-dark" for="telefono">Teléfono</label>
+              <input id="telefono" type="tel" class="form-control-dark" placeholder="+34 600 000 000" autocomplete="tel">
+            </div>
+            <div>
+              <label class="form-label-dark" for="direccion">Dirección</label>
+              <input id="direccion" type="text" class="form-control-dark" placeholder="Calle, nº, puerta" autocomplete="street-address">
+            </div>
+            <div>
+              <label class="form-label-dark" for="ciudad">Ciudad</label>
+              <input id="ciudad" type="text" class="form-control-dark" autocomplete="address-level2">
+            </div>
+            <div>
+              <label class="form-label-dark" for="codigoPostal">Código postal</label>
+              <input id="codigoPostal" type="text" class="form-control-dark" autocomplete="postal-code">
+            </div>
+          </div>
+
+          <div style="margin-top:1.75rem;">
+            <button type="button" onclick="guardarPerfil()" class="btn-fire" style="clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">Guardar cambios</button>
+          </div>
+        </section>
+
+        <section class="account-panel">
+          <h2 class="account-panel__title">Cambiar contraseña</h2>
+
+          <div style="max-width:440px;">
+            <div class="mb-3">
+              <label class="form-label-dark" for="pwd-actual">Contraseña actual</label>
+              <input id="pwd-actual" type="password" class="form-control-dark" autocomplete="current-password">
+            </div>
+            <div class="mb-3">
+              <label class="form-label-dark" for="pwd-nueva">Nueva contraseña</label>
+              <input id="pwd-nueva" type="password" class="form-control-dark" autocomplete="new-password">
+            </div>
+            <div class="mb-3">
+              <label class="form-label-dark" for="pwd-confirmar">Confirmar nueva contraseña</label>
+              <input id="pwd-confirmar" type="password" class="form-control-dark" autocomplete="new-password">
+            </div>
+            <button type="button" onclick="cambiarContraseña()" class="btn-fire" style="clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">Cambiar contraseña</button>
+          </div>
+        </section>
       </div>
 
-      <div class="row g-4">
-        
-        <div class="col-lg-8">
-          <div style="background:var(--gris);border:1px solid var(--borde);border-radius:8px;padding:2rem;margin-bottom:2rem;">
-            <h4 style="margin-bottom:1.5rem;">Información Personal</h4>
-            
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Nombre</label>
-                <input id="nombre" type="text" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
-              </div>
-              <div class="col-md-6">
-                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Email</label>
-                <input id="email" type="email" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
-              </div>
-              <div class="col-md-6">
-                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Teléfono</label>
-                <input id="telefono" type="tel" placeholder="+34 600 000 000" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
-              </div>
-              <div class="col-md-6">
-                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Dirección</label>
-                <input id="direccion" type="text" placeholder="Calle, nº, puerta" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
-              </div>
-              <div class="col-md-6">
-                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Ciudad</label>
-                <input id="ciudad" type="text" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
-              </div>
-              <div class="col-md-6">
-                <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Código Postal</label>
-                <input id="codigoPostal" type="text" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
-              </div>
-            </div>
+      <aside class="account-sidebar">
+        <div class="account-sidebar__title">Mis pedidos</div>
 
-            <div style="margin-top:2rem;">
-              <button onclick="guardarPerfil()" class="btn-fire">Guardar Cambios</button>
-            </div>
-          </div>
-
-          
-          <div style="background:var(--gris);border:1px solid var(--borde);border-radius:8px;padding:2rem;">
-            <h4 style="margin-bottom:1.5rem;">Cambiar Contraseña</h4>
-            
-            <div class="mb-3">
-              <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Contraseña Actual</label>
-              <input id="pwd-actual" type="password" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
-            </div>
-            <div class="mb-3">
-              <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Nueva Contraseña</label>
-              <input id="pwd-nueva" type="password" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
-            </div>
-            <div class="mb-3">
-              <label style="display:block;margin-bottom:0.5rem;color:var(--texto2);font-size:0.9rem;">Confirmar Nueva Contraseña</label>
-              <input id="pwd-confirmar" type="password" style="width:100%;background:var(--borde);border:1px solid var(--borde);color:var(--texto);padding:0.8rem;border-radius:4px;">
-            </div>
-
-            <button onclick="cambiarContraseña()" class="btn-fire">Cambiar Contraseña</button>
-          </div>
+        <div id="pedidos-lista" style="max-height:560px;overflow-y:auto;">
+          <div class="eg-spinner"></div>
         </div>
 
-        
-        <div class="col-lg-4">
-          <div style="background:var(--gris);border:1px solid var(--borde);border-radius:8px;padding:2rem;position:sticky;top:100px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;color:var(--texto2);font-weight:600;margin-bottom:1.5rem;">Mis Pedidos</div>
-
-            <div id="pedidos-lista" style="max-height:600px;overflow-y:auto;">
-              <div class="spinner-border" role="status" style="color:var(--naranja);"></div>
-            </div>
-
-            <button onclick="irATienda()" class="btn-outline-fire w-100 mt-3">Volver a la Tienda</button>
-          </div>
-        </div>
-      </div>
+        <button type="button" onclick="irATienda()" class="btn-outline-fire w-100 mt-3">Volver a la tienda</button>
+      </aside>
     </div>
-  </section>
+  </main>
 
-  
   <div id="toast-container"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/js/app.js"></script>
 
   <script>
@@ -140,21 +132,21 @@
 
         const lista = document.getElementById('pedidos-lista');
         if (pedidos.length === 0) {
-          lista.innerHTML = '<p style="color:var(--texto2);text-align:center;">No tienes pedidos aún</p>';
+          lista.innerHTML = '<p style="color:var(--smoke);text-align:center;font-family:var(--font-cond);font-size:13px;">No tienes pedidos aún</p>';
           return;
         }
 
         let html = '';
         pedidos.forEach(p => {
-          const estadoBadge = `<span style="background:${p.estado === 'Entregado' ? '#22c55e' : 'var(--naranja)'};color:var(--blanco);padding:0.25rem 0.6rem;border-radius:3px;font-size:0.75rem;">${p.estado}</span>`;
+          const estadoBadge = `<span style="background:${p.estado === 'Entregado' ? '#22c55e' : 'var(--red)'};color:var(--white);padding:0.25rem 0.6rem;border-radius:2px;font-size:0.7rem;font-family:var(--font-cond);letter-spacing:0.06em;text-transform:uppercase;">${p.estado}</span>`;
           html += `
-            <div style="background:var(--oscuro);border:1px solid var(--borde);border-radius:6px;padding:1rem;margin-bottom:1rem;cursor:pointer;" onclick="verDetallePedido(${p.idPedido})">
+            <div class="pedido-card-mini" onclick="verDetallePedido(${p.idPedido})">
               <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:0.5rem;">
-                <strong style="font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;">#${p.idPedido}</strong>
+                <strong style="font-family:var(--font-cond);letter-spacing:0.08em;color:var(--white);">#${p.idPedido}</strong>
                 ${estadoBadge}
               </div>
-              <div style="color:var(--texto2);font-size:0.85rem;margin-bottom:0.5rem;">${new Date(p.fecha).toLocaleDateString('es-ES')}</div>
-              <div style="font-weight:700;color:var(--naranja);">${formatPrice(p.total)}</div>
+              <div style="color:var(--smoke);font-size:0.85rem;margin-bottom:0.5rem;font-family:var(--font-body);">${new Date(p.fecha).toLocaleDateString('es-ES')}</div>
+              <div style="font-weight:700;color:var(--red);font-family:var(--font-impact);font-size:1.35rem;letter-spacing:0.04em;">${formatPrice(p.total)}</div>
             </div>`;
         });
 
@@ -249,9 +241,7 @@
     }
 
     function verDetallePedido(idPedido) {
-      const user = getSession();
       alert(`Detalles del pedido #${idPedido}\n\nFuncionalidad de detalle en desarrollo`);
-      // window.location.href = `/pages/pedido-detalle.html?id=${idPedido}`;
     }
 
     function irATienda() {
