@@ -2214,7 +2214,7 @@ footer:not(.footer) .footer-text { color: var(--texto2); font-size: 0.85rem; lin
 .pay-overlay.show {
   opacity: 1;
 }
-.modal-box {
+.pay-overlay .modal-box {
   opacity: 0;
   transform: translateY(20px) scale(0.97);
   transition: opacity 0.4s cubic-bezier(0.22,1,0.36,1), transform 0.4s cubic-bezier(0.22,1,0.36,1);
@@ -2337,4 +2337,104 @@ footer:not(.footer) .footer-text { color: var(--texto2); font-size: 0.85rem; lin
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+
+/* ============================================================
+   BUGFIXES ENERGYM
+   ============================================================ */
+
+/* ---- Auth title missing styles ---- */
+.auth-title {
+  font-family: var(--font-impact);
+  font-size: 2.2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+/* ---- Mobile nav toggle & menu ---- */
+.nav-mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--light);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+}
+@media (max-width: 900px) {
+  .nav-mobile-toggle { display: block; }
+  .nav-left {
+    position: fixed;
+    inset: 70px 0 auto 0;
+    background: rgba(17,17,17,0.98);
+    backdrop-filter: blur(16px);
+    height: 0;
+    overflow: hidden;
+    transition: height 0.35s cubic-bezier(0.22,1,0.36,1);
+    z-index: 99;
+    border-bottom: 2px solid var(--red);
+  }
+  .nav-left.nav-open {
+    height: auto;
+    padding: 24px 0;
+  }
+  .nav-left nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .nav-left nav a {
+    font-size: 15px;
+  }
+}
+
+/* Active nav link indicator */
+.nav-left nav a.nav-active {
+  color: var(--red);
+}
+.nav-left nav a.nav-active::after {
+  width: 100%;
+}
+
+/* ---- Admin legacy variable aliases ---- */
+:root {
+  --negro: var(--black);
+  --oscuro: var(--carbon);
+  --gris: var(--charcoal);
+  --gris2: var(--steel);
+  --borde: var(--iron);
+  --naranja: var(--red);
+  --naranja2: var(--red-hot);
+  --naranja-glow: var(--red-glow);
+  --texto: var(--white);
+  --texto2: var(--smoke);
+  --blanco: var(--white);
+  --verde: #22c55e;
+  --rojo: var(--red-hot);
+}
+
+/* ---- Footer completeness helpers ---- */
+.footer-main {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1.2fr;
+  gap: 48px;
+  padding: 44px 52px;
+}
+@media (max-width: 900px) {
+  .footer-main { grid-template-columns: 1fr 1fr; padding: 40px 24px; }
+}
+@media (max-width: 600px) {
+  .footer-main { grid-template-columns: 1fr; }
+}
+
+/* ---- Checkout total guard ---- */
+#checkout-total:empty::before,
+#checkout-subtotal:empty::before,
+#checkout-envio:empty::before,
+#checkout-impuestos:empty::before {
+  content: '0,00 €';
 }

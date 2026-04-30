@@ -2,6 +2,15 @@
 
 const API_BASE = '/api';
 
+function escapeHtml(text) {
+  if (text == null) return '';
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 function getSession() {
   try {
@@ -57,10 +66,11 @@ function updateNavbar() {
   if (!navRight) return;
 
   const cartCount = parseInt(localStorage.getItem('energym_cart_count') || '0');
+  const userName = (user?.nombre || 'Usuario').trim().split(' ')[0];
 
   if (user) {
     navRight.innerHTML = `
-      <span class="nav-username">${user.nombre.split(' ')[0]}</span>
+      <span class="nav-username">${escapeHtml(userName)}</span>
       ${user.idRol === 1
         ? `<a href="/pages/admin.html" title="Panel admin"><i class="fa-solid fa-screwdriver-wrench"></i></a>`
         : `<a href="/pages/perfil.html" title="Mi perfil"><i class="fa-regular fa-user"></i></a>`
@@ -75,7 +85,7 @@ function updateNavbar() {
     navRight.innerHTML = `
       <a href="/pages/login.html" title="Iniciar sesión"><i class="fa-regular fa-user"></i></a>
       <a href="/pages/login.html"><i class="fa-regular fa-heart"></i></a>
-      <a href="/pages/login.html" class="cart-icon">
+      <a href="/pages/carrito.html" class="cart-icon">
         <i class="fa-solid fa-bag-shopping"></i>
         <span class="cart-count">0</span>
       </a>
@@ -103,10 +113,10 @@ function injectNavbar(activePage) {
 <header class="navbar">
 <div class="nav-left">
   <nav>
-    <a href="/index.html">INICIO</a>
-    <a href="/pages/tienda.html">PRODUCTOS</a>
-    <a href="/pages/tienda.html">COLECCIONES</a>
-    <a href="#">NOSOTROS</a>
+    <a href="/index.html" data-nav="inicio">INICIO</a>
+    <a href="/pages/tienda.html" data-nav="productos">PRODUCTOS</a>
+    <a href="/pages/tienda.html" data-nav="colecciones">COLECCIONES</a>
+    <a href="#" data-nav="nosotros">NOSOTROS</a>
   </nav>
 </div>
 <div class="nav-logo"><a href="/index.html"><span>EnerGym</span></a></div>
@@ -118,9 +128,21 @@ function injectNavbar(activePage) {
     <span class="cart-count">0</span>
   </a>
 </div>
+<button class="nav-mobile-toggle" onclick="toggleMobileNav()" aria-label="Menú">
+  <i class="fa-solid fa-bars"></i>
+</button>
 </header>`;
   updateNavbar();
   updateCartBadge();
+  if (activePage) {
+    document.querySelectorAll('.nav-left nav a').forEach(a => {
+      if (a.dataset.nav === activePage) a.classList.add('nav-active');
+    });
+  }
+}
+
+function toggleMobileNav() {
+  document.querySelector('.nav-left')?.classList.toggle('nav-open');
 }
 
 
@@ -136,7 +158,9 @@ async function updateCartBadge() {
     const res = await fetch(`${API_BASE}/carrito/${user.idUsuario}`);
     if (!res.ok) return;
     const data = await res.json();
-    const count = Array.isArray(data.items) ? data.items.length : 0;
+    const count = Array.isArray(data.items)
+      ? data.items.reduce((sum, i) => sum + (i.cantidad || 0), 0)
+      : 0;
     localStorage.setItem('energym_cart_count', count);
     const badge = document.querySelector('.cart-count');
     if (badge) badge.textContent = count;
@@ -195,11 +219,11 @@ function renderProductCard(p) {
   const user   = getSession();
   const stock  = p.stock ?? p.Stock ?? 0;
   const imagen          = p.imagen || p.Imagen || '';
-  const nombre          = p.nombre || p.Nombre || '';
-  const descripcion     = p.descripcion || p.Descripcion || '';
+  const nombre          = escapeHtml(p.nombre || p.Nombre || '');
+  const descripcion     = escapeHtml(p.descripcion || p.Descripcion || '');
   const precio          = p.precio ?? p.Precio ?? 0;
   const idProducto      = p.idProducto || p.IdProducto;
-  const nombreCategoria = p.nombreCategoria || p.NombreCategoria || '';
+  const nombreCategoria = escapeHtml(p.nombreCategoria || p.NombreCategoria || '');
   const liked           = p.tieneLike || p.TieneLike || false;
 
   let badge = '';
@@ -207,7 +231,7 @@ function renderProductCard(p) {
   else if (stock < 5)  badge = `<div class="prod-badge">ÚLTIMAS ${stock}</div>`;
 
   const imgHtml = imagen
-    ? `<img src="${imagen}" alt="${nombre}" style="width:100%;height:100%;object-fit:cover;"
+    ? `<img src="${escapeHtml(imagen)}" alt="${nombre}" style="width:100%;height:100%;object-fit:cover;"
            onerror="this.parentElement.innerHTML='<div class=\'img-placeholder prod-img\'><span>${nombre}</span></div>'">`
     : `<div class="img-placeholder prod-img"><span>${nombre}</span></div>`;
 

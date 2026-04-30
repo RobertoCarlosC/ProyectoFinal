@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detalle del pedido – EnerGym</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="page-account-body">
+  <div id="navbar-placeholder"></div>
+
+  <main class="page-account reveal">
+    <header class="page-header page-header--account">
+      <p class="section-label">Pedido</p>
+      <h1 class="section-title section-title--cart"><span class="first-word">Detalle</span> <span class="second-word">del pedido</span></h1>
+    </header>
+
+    <div id="skeleton-pedido" class="account-layout reveal-stagger">
+      <div class="account-main">
+        <section class="account-panel">
+          <div style="display:flex;gap:1rem;align-items:center;margin-bottom:1.5rem;">
+            <div class="skeleton" style="width:80px;height:28px;border-radius:2px;"></div>
+            <div class="skeleton" style="width:100px;height:20px;border-radius:2px;"></div>
+          </div>
+          <div style="display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--iron);">
+            <div class="skeleton" style="width:72px;height:72px;border-radius:4px;flex-shrink:0;"></div>
+            <div style="flex:1;">
+              <div class="skeleton" style="width:60%;height:18px;margin-bottom:0.5rem;border-radius:2px;"></div>
+              <div class="skeleton" style="width:30%;height:14px;border-radius:2px;"></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--iron);">
+            <div class="skeleton" style="width:72px;height:72px;border-radius:4px;flex-shrink:0;"></div>
+            <div style="flex:1;">
+              <div class="skeleton" style="width:55%;height:18px;margin-bottom:0.5rem;border-radius:2px;"></div>
+              <div class="skeleton" style="width:25%;height:14px;border-radius:2px;"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <aside class="account-sidebar">
+        <div class="account-sidebar__title">Resumen</div>
+        <div style="margin-top:1rem;">
+          <div class="skeleton" style="width:100%;height:16px;margin-bottom:0.75rem;border-radius:2px;"></div>
+          <div class="skeleton" style="width:80%;height:16px;margin-bottom:0.75rem;border-radius:2px;"></div>
+          <div class="skeleton" style="width:90%;height:16px;border-radius:2px;"></div>
+        </div>
+      </aside>
+    </div>
+
+    <div id="contenido-pedido" class="account-layout reveal-stagger" style="display:none;">
+      <div class="account-main">
+        <section class="account-panel">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+            <div>
+              <div style="font-family:var(--font-cond);letter-spacing:0.08em;color:var(--smoke);font-size:0.85rem;margin-bottom:0.35rem;">Número de pedido</div>
+              <div id="pedido-numero" style="font-family:var(--font-impact);font-size:1.6rem;color:var(--white);letter-spacing:0.04em;"></div>
+            </div>
+            <div id="pedido-estado"></div>
+          </div>
+          <div style="font-family:var(--font-body);color:var(--smoke);font-size:0.9rem;margin-bottom:1.5rem;">
+            Realizado el <span id="pedido-fecha"></span>
+          </div>
+          <h3 style="font-family:var(--font-cond);letter-spacing:0.1em;text-transform:uppercase;color:var(--white);font-size:0.95rem;margin-bottom:1rem;">Productos</h3>
+          <div id="pedido-productos"></div>
+        </section>
+      </div>
+
+      <aside class="account-sidebar">
+        <div class="account-sidebar__title">Resumen del pedido</div>
+
+        <div style="border-top:1px solid var(--iron);border-bottom:1px solid var(--iron);padding:1.25rem 0;margin-bottom:1.25rem;">
+          <div class="summary-row"><span>Subtotal</span><span id="res-subtotal">0,00 €</span></div>
+          <div class="summary-row"><span>Envío</span><span id="res-envio">0,00 €</span></div>
+          <div class="summary-row"><span>Impuestos (21%)</span><span id="res-impuestos">0,00 €</span></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+          <span style="font-family:var(--font-cond);font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:var(--smoke);">Total</span>
+          <span id="res-total" style="font-family:var(--font-impact);font-size:2rem;color:var(--red);letter-spacing:0.04em;">0,00 €</span>
+        </div>
+
+        <div style="margin-bottom:1.5rem;">
+          <div style="font-family:var(--font-cond);letter-spacing:0.1em;text-transform:uppercase;color:var(--white);font-size:0.85rem;margin-bottom:0.6rem;">Dirección de envío</div>
+          <div id="res-direccion" style="color:var(--smoke);font-family:var(--font-body);font-size:0.9rem;line-height:1.55;"></div>
+        </div>
+
+        <div style="margin-bottom:1.5rem;">
+          <div style="font-family:var(--font-cond);letter-spacing:0.1em;text-transform:uppercase;color:var(--white);font-size:0.85rem;margin-bottom:0.6rem;">Método de pago</div>
+          <div id="res-pago" style="color:var(--smoke);font-family:var(--font-body);font-size:0.9rem;"></div>
+        </div>
+
+        <a href="/pages/perfil.html" class="btn-outline-fire w-100">Volver a mis pedidos</a>
+        <a href="/pages/tienda.html" class="btn-fire w-100 mt-3" style="clip-path:none;border-radius:2px;">Seguir comprando</a>
+      </aside>
+    </div>
+  </main>
+
+  <div id="toast-container"></div>
+
+  <script src="/js/app.js"></script>
+  <script>
+    window._activePage = 'perfil';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      injectNavbar('perfil');
+      const user = getSession();
+      if (!user) {
+        window.location.href = '/pages/login.html';
+        return;
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const idPedido = params.get('id');
+      if (!idPedido) {
+        showToast('No se especificó un pedido', 'error');
+        setTimeout(() => window.location.href = '/pages/perfil.html', 1200);
+        return;
+      }
+
+      await cargarPedido(idPedido);
+    });
+
+    async function cargarPedido(idPedido) {
+      try {
+        const res = await fetch(`/api/pedidos/detalle/${idPedido}`);
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+
+        if (!data.pedido) {
+          showToast('Pedido no encontrado', 'error');
+          setTimeout(() => window.location.href = '/pages/perfil.html', 1200);
+          return;
+        }
+
+        renderPedido(data);
+      } catch (e) {
+        showToast('Error al cargar el pedido', 'error');
+      }
+    }
+
+    function renderPedido(data) {
+      const p = data.pedido;
+      const productos = data.productos || [];
+
+      // Header
+      document.getElementById('pedido-numero').textContent = `#${p.idPedido}`;
+      const estadoColor = p.estado === 'Entregado' ? '#22c55e' : (p.estado === 'Enviado' ? '#3b82f6' : 'var(--red)');
+      document.getElementById('pedido-estado').innerHTML =
+        `<span style="background:${estadoColor};color:var(--white);padding:0.35rem 0.75rem;border-radius:2px;font-size:0.75rem;font-family:var(--font-cond);letter-spacing:0.08em;text-transform:uppercase;">${escapeHtml(p.estado)}</span>`;
+      document.getElementById('pedido-fecha').textContent = new Date(p.fecha).toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' });
+
+      // Productos
+      let html = '';
+      let subtotal = 0;
+      productos.forEach(prod => {
+        const itemSubtotal = prod.precio * prod.cantidad;
+        subtotal += itemSubtotal;
+        const img = prod.imagen || 'https://via.placeholder.com/80?text=Sin+imagen';
+        html += `
+          <div style="display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--iron);align-items:center;">
+            <img src="${escapeHtml(img)}" alt="${escapeHtml(prod.nombreProducto)}" style="width:72px;height:72px;object-fit:cover;border-radius:4px;background:var(--iron);flex-shrink:0;">
+            <div style="flex:1;min-width:0;">
+              <div style="font-family:var(--font-cond);font-weight:700;color:var(--white);letter-spacing:0.05em;margin-bottom:0.35rem;">${escapeHtml(prod.nombreProducto)}</div>
+              <div style="color:var(--smoke);font-size:0.85rem;">Cantidad: ${prod.cantidad}</div>
+              <div style="color:var(--smoke);font-size:0.8rem;margin-top:0.2rem;">${formatPrice(prod.precio)} / ud.</div>
+            </div>
+            <div style="font-family:var(--font-impact);color:var(--white);letter-spacing:0.03em;white-space:nowrap;font-size:1.1rem;">${formatPrice(itemSubtotal)}</div>
+          </div>`;
+      });
+      document.getElementById('pedido-productos').innerHTML = html || '<p style="color:var(--smoke);">No hay productos en este pedido.</p>';
+
+      // Resumen
+      const envio = subtotal > 50 ? 0 : 5.99;
+      const impuestos = (subtotal + envio) * 0.21;
+      const total = subtotal + envio + impuestos;
+
+      document.getElementById('res-subtotal').textContent = formatPrice(subtotal);
+      document.getElementById('res-envio').textContent = envio === 0 ? 'Gratis' : formatPrice(envio);
+      document.getElementById('res-impuestos').textContent = formatPrice(impuestos);
+      document.getElementById('res-total').textContent = formatPrice(total);
+
+      document.getElementById('res-direccion').textContent = p.direccionEnvio || 'No especificada';
+      document.getElementById('res-pago').textContent = p.metodoPago || 'No especificado';
+
+      // Mostrar contenido, ocultar skeleton
+      document.getElementById('skeleton-pedido').style.display = 'none';
+      document.getElementById('contenido-pedido').style.display = 'grid';
+    }
+  </script>
+</body>
+</html>
