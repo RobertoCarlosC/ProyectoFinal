@@ -227,6 +227,26 @@ GO
 
 
 
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='MensajesSoporte' AND xtype='U')
+BEGIN
+    CREATE TABLE MensajesSoporte (
+        IdMensaje  INT            PRIMARY KEY IDENTITY(1,1),
+        IdUsuario  INT            NULL,
+        Nombre     NVARCHAR(100)  NOT NULL,
+        Email      NVARCHAR(150)  NOT NULL,
+        Asunto     NVARCHAR(200)  NOT NULL,
+        Mensaje    NVARCHAR(2000) NOT NULL,
+        Fecha      DATETIME       NOT NULL DEFAULT GETDATE(),
+        Leido      BIT            NOT NULL DEFAULT 0,
+        Respondido BIT            NOT NULL DEFAULT 0
+    );
+    PRINT '✓ Tabla MensajesSoporte creada.';
+END
+ELSE PRINT '– Tabla MensajesSoporte ya existe.';
+GO
+
+
+
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ProductoImagenes' AND xtype='U')
 BEGIN
     CREATE TABLE ProductoImagenes (

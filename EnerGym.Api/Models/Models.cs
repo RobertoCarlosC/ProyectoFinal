@@ -276,5 +276,27 @@ namespace EnerGym.Models
         public decimal VentasTotal { get; set; }
         public decimal PromedioVenta { get; set; }
     }
+
+    public class MensajeSoporte
+    {
+        public int IdMensaje { get; set; }
+        public int? IdUsuario { get; set; }
+        public string Nombre { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Asunto { get; set; } = "";
+        public string Mensaje { get; set; } = "";
+        public DateTime Fecha { get; set; }
+        public bool Leido { get; set; }
+        public bool Respondido { get; set; }
+    }
+
+    public class CrearMensajeDto
+    {
+        public int? IdUsuario { get; set; }
+        public string Nombre { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Asunto { get; set; } = "";
+        public string Mensaje { get; set; } = "";
+    }
 }
 

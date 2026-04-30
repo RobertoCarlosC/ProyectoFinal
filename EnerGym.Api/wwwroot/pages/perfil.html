@@ -73,6 +73,32 @@
             <button type="button" onclick="cambiarContraseña()" class="btn-fire" style="clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">Cambiar contraseña</button>
           </div>
         </section>
+
+        <section class="account-panel">
+          <h2 class="account-panel__title">Contactar con soporte</h2>
+          <div style="max-width:520px;">
+            <div class="account-form-grid">
+              <div style="grid-column:1/-1;">
+                <label class="form-label-dark" for="soporte-asunto">Asunto</label>
+                <input id="soporte-asunto" type="text" class="form-control-dark" placeholder="¿Sobre qué quieres hablar?">
+              </div>
+              <div style="grid-column:1/-1;">
+                <label class="form-label-dark" for="soporte-mensaje">Mensaje</label>
+                <textarea id="soporte-mensaje" class="form-control-dark" rows="4" placeholder="Describe tu consulta, duda o incidencia..." style="resize:vertical;"></textarea>
+              </div>
+            </div>
+            <div style="margin-top:1.25rem;">
+              <button type="button" onclick="enviarMensajeSoporte()" class="btn-fire" style="clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">Enviar mensaje</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="account-panel">
+          <h2 class="account-panel__title">Mis mensajes</h2>
+          <div id="mis-mensajes-lista" style="max-height:360px;overflow-y:auto;">
+            <p style="color:var(--smoke);font-family:var(--font-body);font-size:0.9rem;">No has enviado ningún mensaje aún.</p>
+          </div>
+        </section>
       </div>
 
       <aside class="account-sidebar">

@@ -241,7 +241,7 @@ namespace EnerGym.Controllers
 
                 string query = @"
                     SELECT p.IdPedido, p.IdUsuario, u.Nombre AS UsuarioNombre, u.Email, p.Fecha, p.Total, 
-                           p.Estado, p.DireccionEnvio, 
+                           p.Estado, 
                            COUNT(pp.IdDetalle) AS CantidadProductos
                     FROM Pedidos p
                     INNER JOIN Usuarios u ON p.IdUsuario = u.IdUsuario
@@ -253,7 +253,7 @@ namespace EnerGym.Controllers
                 if (idUsuario.HasValue)
                     query += " AND p.IdUsuario = @IdUsuario";
 
-                query += " GROUP BY p.IdPedido, p.IdUsuario, u.Nombre, u.Email, p.Fecha, p.Total, p.Estado, p.DireccionEnvio ORDER BY p.Fecha DESC";
+                query += " GROUP BY p.IdPedido, p.IdUsuario, u.Nombre, u.Email, p.Fecha, p.Total, p.Estado ORDER BY p.Fecha DESC";
 
                 var cmd = new SqlCommand(query, conn);
                 if (!string.IsNullOrEmpty(estado))
@@ -274,7 +274,6 @@ namespace EnerGym.Controllers
                         fecha = reader["Fecha"],
                         total = Convert.ToDecimal(reader["Total"]),
                         estado = reader["Estado"].ToString(),
-                        direccionEnvio = reader["DireccionEnvio"]?.ToString(),
                         cantidadProductos = (int)reader["CantidadProductos"]
                     });
                 }
@@ -332,6 +331,53 @@ namespace EnerGym.Controllers
             }
         }
 
+        [HttpGet("admin/ventas-por-dia")]
+        public IActionResult GetVentasPorDia([FromQuery] int dias = 14)
+        {
+            try
+            {
+                using var conn = _db.GetConnection();
+                conn.Open();
+
+                var cmd = new SqlCommand(@"
+                    WITH Dias AS (
+                        SELECT CAST(GETDATE() AS DATE) AS Fecha
+                        UNION ALL
+                        SELECT DATEADD(day, -1, Fecha)
+                        FROM Dias
+                        WHERE Fecha > DATEADD(day, -@Dias, CAST(GETDATE() AS DATE))
+                    )
+                    SELECT 
+                        d.Fecha,
+                        COUNT(p.IdPedido) as TotalPedidos,
+                        ISNULL(SUM(p.Total), 0) as Ventas
+                    FROM Dias d
+                    LEFT JOIN Pedidos p ON CAST(p.Fecha AS DATE) = d.Fecha
+                    GROUP BY d.Fecha
+                    ORDER BY d.Fecha ASC
+                    OPTION (MAXRECURSION 0)", conn);
+                cmd.Parameters.AddWithValue("@Dias", dias);
+
+                var ventas = new List<object>();
+                using var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    ventas.Add(new
+                    {
+                        fecha = ((DateTime)reader["Fecha"]).ToString("yyyy-MM-dd"),
+                        totalPedidos = (int)reader["TotalPedidos"],
+                        ventas = Convert.ToDecimal(reader["Ventas"])
+                    });
+                }
+
+                return Ok(ventas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
         [HttpPost("admin/{idPedido:int}/estado")]
         public IActionResult CambiarEstadoAdmin(int idPedido, [FromBody] CambiarEstadoPedidoAdminDto dto)
         {
@@ -364,17 +410,21 @@ namespace EnerGym.Controllers
                 updateCmd.Parameters.AddWithValue("@IdPedido", idPedido);
                 updateCmd.ExecuteNonQuery();
 
-                // Registrar en el historial
-                var historialCmd = new SqlCommand(
-                    @"INSERT INTO PedidoHistorialEstados (IdPedido, EstadoAnterior, EstadoNuevo, Fecha, CambiadoPor, Notas)
-                      VALUES (@IdPedido, @EstadoAnterior, @EstadoNuevo, GETDATE(), @CambiadoPor, @Notas)",
-                    conn);
-                historialCmd.Parameters.AddWithValue("@IdPedido", idPedido);
-                historialCmd.Parameters.AddWithValue("@EstadoAnterior", (object?)estadoActual ?? DBNull.Value);
-                historialCmd.Parameters.AddWithValue("@EstadoNuevo", dto.NuevoEstado);
-                historialCmd.Parameters.AddWithValue("@CambiadoPor", $"Admin_{dto.IdAdmin}");
-                historialCmd.Parameters.AddWithValue("@Notas", (object?)dto.Notas ?? DBNull.Value);
-                historialCmd.ExecuteNonQuery();
+                // Registrar en el historial (opcional: tabla puede no existir aún)
+                try
+                {
+                    var historialCmd = new SqlCommand(
+                        @"INSERT INTO PedidoHistorialEstados (IdPedido, EstadoAnterior, EstadoNuevo, Fecha, CambiadoPor, Notas)
+                          VALUES (@IdPedido, @EstadoAnterior, @EstadoNuevo, GETDATE(), @CambiadoPor, @Notas)",
+                        conn);
+                    historialCmd.Parameters.AddWithValue("@IdPedido", idPedido);
+                    historialCmd.Parameters.AddWithValue("@EstadoAnterior", (object?)estadoActual ?? DBNull.Value);
+                    historialCmd.Parameters.AddWithValue("@EstadoNuevo", dto.NuevoEstado);
+                    historialCmd.Parameters.AddWithValue("@CambiadoPor", $"Admin_{dto.IdAdmin}");
+                    historialCmd.Parameters.AddWithValue("@Notas", (object?)dto.Notas ?? DBNull.Value);
+                    historialCmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex) when (ex.Number == 208) { /* tabla no existe, ignorar */ }
 
                 return Ok(new { message = "Estado actualizado correctamente", idPedido, nuevoEstado = dto.NuevoEstado });
             }
@@ -417,6 +467,10 @@ namespace EnerGym.Controllers
                 }
 
                 return Ok(historial);
+            }
+            catch (SqlException ex) when (ex.Number == 208)
+            {
+                return Ok(new List<object>());
             }
             catch (Exception ex)
             {
@@ -468,16 +522,20 @@ namespace EnerGym.Controllers
                 updateCmd.Parameters.AddWithValue("@IdPedido", idPedido);
                 updateCmd.ExecuteNonQuery();
 
-                // Registrar en historial
-                var historialCmd = new SqlCommand(
-                    @"INSERT INTO PedidoHistorialEstados (IdPedido, EstadoAnterior, EstadoNuevo, Fecha, CambiadoPor, Notas)
-                      VALUES (@IdPedido, @EstadoAnterior, 'Entregado', GETDATE(), @CambiadoPor, @Notas)",
-                    conn);
-                historialCmd.Parameters.AddWithValue("@IdPedido", idPedido);
-                historialCmd.Parameters.AddWithValue("@EstadoAnterior", estadoActual);
-                historialCmd.Parameters.AddWithValue("@CambiadoPor", $"Usuario_{dto.IdUsuario}");
-                historialCmd.Parameters.AddWithValue("@Notas", "Cliente confirmó recepción del pedido");
-                historialCmd.ExecuteNonQuery();
+                // Registrar en historial (opcional: tabla puede no existir aún)
+                try
+                {
+                    var historialCmd = new SqlCommand(
+                        @"INSERT INTO PedidoHistorialEstados (IdPedido, EstadoAnterior, EstadoNuevo, Fecha, CambiadoPor, Notas)
+                          VALUES (@IdPedido, @EstadoAnterior, 'Entregado', GETDATE(), @CambiadoPor, @Notas)",
+                        conn);
+                    historialCmd.Parameters.AddWithValue("@IdPedido", idPedido);
+                    historialCmd.Parameters.AddWithValue("@EstadoAnterior", estadoActual);
+                    historialCmd.Parameters.AddWithValue("@CambiadoPor", $"Usuario_{dto.IdUsuario}");
+                    historialCmd.Parameters.AddWithValue("@Notas", "Cliente confirmó recepción del pedido");
+                    historialCmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex) when (ex.Number == 208) { /* tabla no existe, ignorar */ }
 
                 return Ok(new { message = "Entrega confirmada correctamente", idPedido });
             }
