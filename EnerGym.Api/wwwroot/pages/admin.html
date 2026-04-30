@@ -380,11 +380,11 @@
         <tr>
           <td style="color:var(--texto2);">#${p.idProducto}</td>
           <td>
-            <img src="${p.imagen || 'https://via.placeholder.com/50x50/1a1a1a/ff5500?text=EG'}" alt="${p.nombre}"
+            <img src="${escapeHtml(p.imagen) || 'https://via.placeholder.com/50x50/1a1a1a/ff5500?text=EG'}" alt="${escapeHtml(p.nombre)}"
                  onerror="this.src='https://via.placeholder.com/50x50/1a1a1a/ff5500?text=EG'">
           </td>
-          <td style="font-weight:600;color:var(--blanco);">${p.nombre}</td>
-          <td style="color:var(--naranja);font-family:'Barlow Condensed',sans-serif;">${p.nombreCategoria || '—'}</td>
+          <td style="font-weight:600;color:var(--blanco);">${escapeHtml(p.nombre)}</td>
+          <td style="color:var(--naranja);font-family:'Barlow Condensed',sans-serif;">${escapeHtml(p.nombreCategoria) || '—'}</td>
           <td style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--naranja);">${formatPrice(p.precio)}</td>
           <td>
             <span class="${p.stock === 0 ? 'stock-badge stock-out' : p.stock < 5 ? 'stock-badge stock-low' : 'stock-badge stock-ok'}">
@@ -523,6 +523,7 @@
     function closeDeleteModal() {
       deleteUsuarioId = null;
       deleteId = null;
+      document.getElementById('modal-delete-titulo').textContent = 'Eliminar';
       document.getElementById('modal-delete').style.display = 'none';
     }
 
@@ -598,7 +599,7 @@
       document.getElementById('edit-usuario-id').value = id;
       document.getElementById('usuario-nombre').value = u.nombre || '';
       document.getElementById('usuario-email').value = u.email || '';
-      document.getElementById('usuario-rol').value = u.idRol || '';
+      document.getElementById('usuario-rol').value = (u.idRol || (u.rol === 'admin' || u.rol === 'Admin' ? 1 : 2)) || '';
 
       document.getElementById('form-title-usuario').textContent = `Editar Usuario: ${u.nombre}`;
       document.getElementById('btn-guardar-usuario').textContent = 'Actualizar Usuario';

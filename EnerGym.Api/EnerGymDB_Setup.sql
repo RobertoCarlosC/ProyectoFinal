@@ -146,22 +146,33 @@ GO
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Pedidos' AND xtype='U')
 BEGIN
     CREATE TABLE Pedidos (
-        IdPedido  INT           PRIMARY KEY IDENTITY(1,1),
-        IdUsuario INT           NOT NULL,
-        Fecha     DATETIME      NOT NULL DEFAULT GETDATE(),
-        Total     DECIMAL(10,2) NOT NULL,
-        Estado    NVARCHAR(50)  NOT NULL DEFAULT 'Pendiente', 
+        IdPedido       INT           PRIMARY KEY IDENTITY(1,1),
+        IdUsuario      INT           NOT NULL,
+        Fecha          DATETIME      NOT NULL DEFAULT GETDATE(),
+        Total          DECIMAL(10,2) NOT NULL,
+        Estado         NVARCHAR(50)  NOT NULL DEFAULT 'Pendiente',
+        DireccionEnvio NVARCHAR(500) NULL,
+        MetodoPago     NVARCHAR(50)  NULL,
         CONSTRAINT FK_Pedidos_Usuarios FOREIGN KEY (IdUsuario) REFERENCES Usuarios(IdUsuario)
     );
     PRINT '✓ Tabla Pedidos creada.';
 END
 ELSE 
 BEGIN
-    
     IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='Pedidos' AND COLUMN_NAME='Estado')
     BEGIN
         ALTER TABLE Pedidos ADD Estado NVARCHAR(50) NOT NULL DEFAULT 'Pendiente';
         PRINT '✓ Columna Estado añadida a Pedidos.';
+    END
+    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='Pedidos' AND COLUMN_NAME='DireccionEnvio')
+    BEGIN
+        ALTER TABLE Pedidos ADD DireccionEnvio NVARCHAR(500) NULL;
+        PRINT '✓ Columna DireccionEnvio añadida a Pedidos.';
+    END
+    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='Pedidos' AND COLUMN_NAME='MetodoPago')
+    BEGIN
+        ALTER TABLE Pedidos ADD MetodoPago NVARCHAR(50) NULL;
+        PRINT '✓ Columna MetodoPago añadida a Pedidos.';
     END
     PRINT '– Tabla Pedidos ya existe.';
 END

@@ -103,9 +103,18 @@ namespace EnerGym.Controllers
                 using var conn = _db.GetConnection();
                 conn.Open();
 
+                var prodCmd = new SqlCommand(
+                    "SELECT Stock FROM Productos WHERE IdProducto = @IdProducto",
+                    conn);
+                prodCmd.Parameters.AddWithValue("@IdProducto", dto.IdProducto);
+                var prodResult = prodCmd.ExecuteScalar();
+                if (prodResult == null || prodResult == DBNull.Value)
+                    return BadRequest(new { error = "El producto no existe." });
+
+                int stock = (int)prodResult;
+
                 int idCarrito = ObtenerOCrearCarrito(conn, dto.IdUsuario);
 
-                
                 var checkCmd = new SqlCommand(
                     "SELECT Id, Cantidad FROM CarritoProductos WHERE IdCarrito = @IdCarrito AND IdProducto = @IdProducto",
                     conn);
@@ -115,10 +124,12 @@ namespace EnerGym.Controllers
                 using var reader = checkCmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    
                     int itemId          = (int)reader["Id"];
                     int cantidadActual  = (int)reader["Cantidad"];
                     reader.Close();
+
+                    if (cantidadActual + dto.Cantidad > stock)
+                        return BadRequest(new { error = $"Stock insuficiente. Disponible: {stock}, en carrito: {cantidadActual}, solicitado: {dto.Cantidad}." });
 
                     var updateCmd = new SqlCommand(
                         "UPDATE CarritoProductos SET Cantidad = @Cantidad WHERE Id = @Id",
@@ -129,8 +140,10 @@ namespace EnerGym.Controllers
                 }
                 else
                 {
-                    
                     reader.Close();
+                    if (dto.Cantidad > stock)
+                        return BadRequest(new { error = $"Stock insuficiente. Disponible: {stock}, solicitado: {dto.Cantidad}." });
+
                     var insertCmd = new SqlCommand(
                         "INSERT INTO CarritoProductos (IdCarrito, IdProducto, Cantidad) VALUES (@IdCarrito, @IdProducto, @Cantidad)",
                         conn);
@@ -159,12 +172,25 @@ namespace EnerGym.Controllers
 
                 if (dto.Cantidad <= 0)
                 {
-                    
                     var delCmd = new SqlCommand("DELETE FROM CarritoProductos WHERE Id = @Id", conn);
                     delCmd.Parameters.AddWithValue("@Id", id);
-                    delCmd.ExecuteNonQuery();
+                    int deleted = delCmd.ExecuteNonQuery();
+                    if (deleted == 0) return NotFound(new { error = "Item no encontrado." });
                     return Ok(new { message = "Producto eliminado del carrito." });
                 }
+
+                var stockCmd = new SqlCommand(
+                    @"SELECT cp.IdProducto, p.Stock FROM CarritoProductos cp
+                      INNER JOIN Productos p ON cp.IdProducto = p.IdProducto
+                      WHERE cp.Id = @Id", conn);
+                stockCmd.Parameters.AddWithValue("@Id", id);
+                using var r = stockCmd.ExecuteReader();
+                if (!r.Read()) return NotFound(new { error = "Item no encontrado." });
+                int stock = (int)r["Stock"];
+                r.Close();
+
+                if (dto.Cantidad > stock)
+                    return BadRequest(new { error = $"Stock insuficiente. Disponible: {stock}." });
 
                 var cmd = new SqlCommand(
                     "UPDATE CarritoProductos SET Cantidad = @Cantidad WHERE Id = @Id",
@@ -192,8 +218,9 @@ namespace EnerGym.Controllers
 
                 var cmd = new SqlCommand("DELETE FROM CarritoProductos WHERE Id = @Id", conn);
                 cmd.Parameters.AddWithValue("@Id", id);
-                cmd.ExecuteNonQuery();
+                int rows = cmd.ExecuteNonQuery();
 
+                if (rows == 0) return NotFound(new { error = "Item no encontrado." });
                 return Ok(new { message = "Producto eliminado del carrito." });
             }
             catch (Exception ex)

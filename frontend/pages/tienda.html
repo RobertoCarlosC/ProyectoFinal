@@ -90,16 +90,16 @@
 </div>
 </header>
 
-<div class="tienda-hero">
+<div class="tienda-hero reveal">
   <div class="section-label">// TIENDA</div>
   <h1 class="section-title" style="margin-bottom:0">TODO EL<br><span>ARSENAL</span></h1>
-  <div class="tienda-filters">
+  <div class="tienda-filters reveal">
     <button class="filter-btn active" onclick="filtrar(null, this)">TODOS</button>
   </div>
 </div>
 
-<section class="tienda-section">
-  <div class="tienda-grid" id="tienda-grid">
+<section class="tienda-section reveal">
+  <div class="tienda-grid reveal-stagger" id="tienda-grid">
     <div class="loading-msg">CARGANDO PRODUCTOS...</div>
   </div>
 </section>
@@ -152,7 +152,7 @@
 
   async function cargarCategorias() {
     try {
-      const res = await fetch(`${API_BASE}/categorias`);
+      const res = await fetch(`${API_BASE}/productos/categorias`);
       if (!res.ok) return;
       const cats = await res.json();
       const filters = document.querySelector('.tienda-filters');
@@ -183,6 +183,7 @@
       return;
     }
     grid.innerHTML = productos.map(p => renderProductCard(p)).join('');
+    if (window.initRevealObserver) initRevealObserver();
   }
 
   cargarProductos();

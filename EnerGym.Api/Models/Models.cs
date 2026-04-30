@@ -112,6 +112,8 @@ namespace EnerGym.Models
     public class ConfirmarPedidoDto
     {
         public int IdUsuario { get; set; }
+        public string? DireccionEnvio { get; set; }
+        public string? MetodoPago { get; set; }
     }
 
     public class LikeDto

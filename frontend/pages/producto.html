@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EnerGym – Producto</title>
-<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="../css/styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -316,34 +316,6 @@
     <a href="https://www.instagram.com/energym164"><i class="fa-brands fa-instagram"></i></a>
     <a href="#"><i class="fa-brands fa-facebook"></i></a>
     <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-    <a href="#"><i class="fa-brands fa-pinterest"></i></a>
-  </div>
-</div>
-<div class="footer-divider"></div>
-<div class="footer-main reveal">
-  <div class="footer-about">
-    <p>Suplementación de élite para hombres que no piden permiso. Calidad sin concesiones, resultados sin excusas.</p>
-  </div>
-  <div class="footer-links">
-    <h4>NAVEGACIÓN</h4>
-    <a href="/index.html">Inicio</a>
-    <a href="/pages/tienda.html">Productos</a>
-    <a href="#">Nosotros</a>
-  </div>
-  <div class="footer-links">
-    <h4>AYUDA</h4>
-    <a href="#">Preguntas frecuentes</a>
-    <a href="#">Envíos y entregas</a>
-    <a href="#">Devoluciones</a>
-    <a href="#">Política de privacidad</a>
-  </div>
-  <div class="footer-newsletter">
-    <h4>NEWSLETTER</h4>
-    <p>Suscríbete y recibe 10% OFF en tu primera compra.</p>
-    <div class="newsletter-form">
-      <input type="email" placeholder="tu@correo.com">
-      <button>→</button>
-    </div>
   </div>
 </div>
 <div class="footer-divider"></div>
@@ -353,12 +325,11 @@
     <i class="fa-brands fa-cc-visa"></i>
     <i class="fa-brands fa-cc-mastercard"></i>
     <i class="fa-brands fa-cc-paypal"></i>
-    <i class="fa-brands fa-apple-pay"></i>
   </div>
 </div>
 </footer>
 
-<script src="/js/app.js"></script>
+<script src="../js/app.js"></script>
 <script>
   updateNavbar();
   updateCartBadge();
@@ -397,20 +368,16 @@
     const imagenes = Array.isArray(p.imagenes) && p.imagenes.length
       ? p.imagenes.map(i => i.urlImagen || i.UrlImagen)
       : [p.imagen || p.Imagen || ''];
-    const nombre = escapeHtml(p.nombre || p.Nombre || '');
-    const descripcion = escapeHtml(p.descripcion || p.Descripcion || '');
+    const nombre = p.nombre || p.Nombre || '';
+    const descripcion = p.descripcion || p.Descripcion || '';
     const precio = p.precio ?? p.Precio ?? 0;
-    const nombreCategoria = escapeHtml(p.nombreCategoria || p.NombreCategoria || '');
+    const nombreCategoria = p.nombreCategoria || p.NombreCategoria || '';
     const liked = p.tieneLike || p.TieneLike || false;
 
     let stockBadge = '';
-    if (stock === 0) {
-      stockBadge = `<span class="stock-badge agotado" style="display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-xmark" style="color:var(--red);font-size:14px;"></i> Agotado</span>`;
-    } else if (stock < 10) {
-      stockBadge = `<span class="stock-badge bajo" style="display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-check" style="color:#22c55e;font-size:12px;"></i> Solo quedan ${stock}</span>`;
-    } else {
-      stockBadge = `<span class="stock-badge" style="display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-check" style="color:#22c55e;font-size:12px;"></i> En stock</span>`;
-    }
+    if (stock === 0) stockBadge = `<span class="stock-badge agotado">Agotado</span>`;
+    else if (stock < 10) stockBadge = `<span class="stock-badge bajo">Solo quedan ${stock}</span>`;
+    else stockBadge = `<span class="stock-badge">En stock</span>`;
 
     const user = getSession();
     const wishBtn = user
@@ -419,16 +386,15 @@
          </button>`
       : '';
 
-    const hasMultiple = imagenes.length > 1;
     const slidesHtml = imagenes.map((img, idx) =>
-      `<img src="${escapeHtml(img)}" alt="${nombre}" class="${idx === 0 ? 'active' : ''}" data-index="${idx}" onerror="this.style.display='none'">`
+      `<img src="${img}" alt="${nombre}" class="${idx === 0 ? 'active' : ''}" data-index="${idx}" onerror="this.style.display='none'">`
     ).join('');
 
-    const thumbsHtml = hasMultiple ? imagenes.map((img, idx) =>
+    const thumbsHtml = imagenes.map((img, idx) =>
       `<button class="${idx === 0 ? 'active' : ''}" onclick="goToSlide(${idx})" data-thumb="${idx}">
-         <img src="${escapeHtml(img)}" alt="">
+         <img src="${img}" alt="">
        </button>`
-    ).join('') : '';
+    ).join('');
 
     const container = document.getElementById('producto-main');
     container.innerHTML = `
@@ -438,12 +404,10 @@
         </div>
         <div class="carousel-main" id="carousel-main">
           ${slidesHtml}
-          ${hasMultiple ? `
           <button class="carousel-arrow prev" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
           <button class="carousel-arrow next" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
-          ` : ''}
         </div>
-        ${hasMultiple ? `<div class="carousel-thumbs">${thumbsHtml}</div>` : ''}
+        <div class="carousel-thumbs">${thumbsHtml}</div>
       </div>
       <div class="producto-info reveal-right">
         <div class="section-label">// ${nombreCategoria}</div>
@@ -484,7 +448,6 @@
   function changeQty(delta) {
     const stock = productoActual.stock ?? productoActual.Stock ?? 0;
     const input = document.getElementById('qty-input');
-    if (stock <= 0) { input.value = 1; cantidad = 1; return; }
     let val = parseInt(input.value) + delta;
     if (val < 1) val = 1;
     if (val > stock) val = stock;

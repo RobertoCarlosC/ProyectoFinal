@@ -259,7 +259,10 @@ namespace EnerGym.Controllers
                 using var conn = _db.GetConnection();
                 conn.Open();
 
-                
+                var delImgs = new SqlCommand("DELETE FROM ProductoImagenes WHERE IdProducto = @Id", conn);
+                delImgs.Parameters.AddWithValue("@Id", id);
+                delImgs.ExecuteNonQuery();
+
                 var delLikes = new SqlCommand("DELETE FROM LikesProductos WHERE IdProducto = @Id", conn);
                 delLikes.Parameters.AddWithValue("@Id", id);
                 delLikes.ExecuteNonQuery();
@@ -274,6 +277,10 @@ namespace EnerGym.Controllers
 
                 if (rows == 0) return NotFound(new { error = "Producto no encontrado." });
                 return Ok(new { message = "Producto eliminado." });
+            }
+            catch (SqlException ex) when (ex.Number == 547)
+            {
+                return BadRequest(new { error = "No se puede eliminar el producto porque tiene pedidos históricos asociados." });
             }
             catch (Exception ex)
             {

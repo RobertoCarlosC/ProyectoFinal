@@ -138,7 +138,7 @@
 
         let html = '';
         pedidos.forEach(p => {
-          const estadoBadge = `<span style="background:${p.estado === 'Entregado' ? '#22c55e' : 'var(--red)'};color:var(--white);padding:0.25rem 0.6rem;border-radius:2px;font-size:0.7rem;font-family:var(--font-cond);letter-spacing:0.06em;text-transform:uppercase;">${p.estado}</span>`;
+          const estadoBadge = `<span style="background:${p.estado === 'Entregado' ? '#22c55e' : 'var(--red)'};color:var(--white);padding:0.25rem 0.6rem;border-radius:2px;font-size:0.7rem;font-family:var(--font-cond);letter-spacing:0.06em;text-transform:uppercase;">${escapeHtml(p.estado)}</span>`;
           html += `
             <div class="pedido-card-mini" onclick="verDetallePedido(${p.idPedido})">
               <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:0.5rem;">
@@ -241,7 +241,7 @@
     }
 
     function verDetallePedido(idPedido) {
-      alert(`Detalles del pedido #${idPedido}\n\nFuncionalidad de detalle en desarrollo`);
+      window.location.href = `/pages/pedido.html?id=${idPedido}`;
     }
 
     function irATienda() {

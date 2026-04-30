@@ -51,7 +51,7 @@
   </div>
   <div class="hero-overlay"></div>
 </div>
-<div class="hero-content">
+<div class="hero-content anim-slide-up">
   <div class="hero-tag">
     <span class="tag-line"></span>
     NUEVA COLECCIÓN 2026
@@ -69,9 +69,9 @@
 
 
 <section class="categories">
-<div class="section-label">// CATEGORÍAS</div>
-<h2 class="section-title">ELIGE TU<br><span>ARSENAL</span></h2>
-<div class="categories-grid">
+<div class="section-label reveal">// CATEGORÍAS</div>
+<h2 class="section-title reveal">ELIGE TU<br><span>ARSENAL</span></h2>
+<div class="categories-grid reveal-stagger">
   <div class="category-card">
     <div class="img-placeholder cat-img"><span>PROTEÍNAS<br>700 × 800px</span></div>
     <div class="cat-overlay">
@@ -108,7 +108,7 @@
   </div>
   <a href="/pages/tienda.html" class="btn-outline-red">VER TODO →</a>
 </div>
-<div class="products-grid" id="products-grid">
+<div class="products-grid reveal-stagger" id="products-grid">
   
   <div class="product-card"><div class="product-img-wrap"><div class="img-placeholder prod-img"><span>CARGANDO...</span></div></div><div class="product-info"><span class="prod-cat">—</span><h4>PRODUCTO</h4><p class="prod-price">—</p></div></div>
   <div class="product-card"><div class="product-img-wrap"><div class="img-placeholder prod-img"><span>CARGANDO...</span></div></div><div class="product-info"><span class="prod-cat">—</span><h4>PRODUCTO</h4><p class="prod-price">—</p></div></div>
@@ -118,7 +118,7 @@
 </section>
 
 
-<section class="promo-banner">
+<section class="promo-banner reveal">
 <div class="promo-img-side">
   <div class="img-placeholder promo-img"><span>IMAGEN BANNER PROMO<br>960 × 560px</span></div>
   <div class="promo-img-overlay"></div>
@@ -135,7 +135,7 @@
 </section>
 
 
-<section class="benefits">
+<section class="benefits reveal-stagger">
 <div class="benefit">
   <div class="benefit-icon"><i class="fa-solid fa-truck-fast"></i></div>
   <div class="benefit-text"><h4>ENVÍO RÁPIDO</h4><p>Entrega en 2–5 días hábiles</p></div>
@@ -158,12 +158,12 @@
 </section>
 
 
-<section class="gallery">
+<section class="gallery reveal">
 <div class="gallery-header">
   <div class="section-label">// SÍGUENOS</div>
   <h2 class="section-title">@ENER<span>GYM</span></h2>
 </div>
-<div class="gallery-grid">
+<div class="gallery-grid reveal-stagger">
   <div class="gallery-item"><div class="img-placeholder gal-img"><span>FOTO 1</span></div><div class="gal-hover"><i class="fa-brands fa-instagram"></i></div></div>
   <div class="gallery-item"><div class="img-placeholder gal-img"><span>FOTO 2</span></div><div class="gal-hover"><i class="fa-brands fa-instagram"></i></div></div>
   <div class="gallery-item"><div class="img-placeholder gal-img"><span>FOTO 3</span></div><div class="gal-hover"><i class="fa-brands fa-instagram"></i></div></div>
@@ -185,7 +185,7 @@
   </div>
 </div>
 <div class="footer-divider"></div>
-<div class="footer-main">
+<div class="footer-main reveal">
   <div class="footer-about">
     <p>Suplementación de élite para hombres que no piden permiso. Calidad sin concesiones, resultados sin excusas.</p>
   </div>
@@ -243,6 +243,7 @@
       // Mostrar los 4 primeros
       const featured = productos.slice(0, 4);
       grid.innerHTML = featured.map(p => renderProductCard(p)).join('');
+      if (window.initRevealObserver) initRevealObserver();
     } catch (e) {
       // Si la API no está disponible, dejar los placeholders
     }
