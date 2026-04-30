@@ -1,60 +1,64 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\css\\style.css",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\css\\style.css",
       "PackagePath": "staticwebassets\\css\\style.css"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\css\\styles.css",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\css\\styles.css",
       "PackagePath": "staticwebassets\\css\\styles.css"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\index.html",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\index.html",
       "PackagePath": "staticwebassets\\index.html"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\js\\app.js",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\js\\app.js",
       "PackagePath": "staticwebassets\\js\\app.js"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\js\\gestion-pedidos.js",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\js\\gestion-pedidos.js",
       "PackagePath": "staticwebassets\\js\\gestion-pedidos.js"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\admin.html",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\admin.html",
       "PackagePath": "staticwebassets\\pages\\admin.html"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\carrito.html",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\carrito.html",
       "PackagePath": "staticwebassets\\pages\\carrito.html"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\checkout.html",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\checkout.html",
       "PackagePath": "staticwebassets\\pages\\checkout.html"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\login.html",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\login.html",
       "PackagePath": "staticwebassets\\pages\\login.html"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\pedido.html",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\pedido.html",
       "PackagePath": "staticwebassets\\pages\\pedido.html"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\perfil.html",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\perfil.html",
       "PackagePath": "staticwebassets\\pages\\perfil.html"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\producto.html",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\producto.html",
       "PackagePath": "staticwebassets\\pages\\producto.html"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\registro.html",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\registro.html",
       "PackagePath": "staticwebassets\\pages\\registro.html"
     },
     {
-      "Id": "C:\\Users\\Grupo Levante\\Desktop\\EnergymCopia\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\tienda.html",
+      "Id": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\wwwroot\\pages\\tienda.html",
       "PackagePath": "staticwebassets\\pages\\tienda.html"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.EnerGym.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.EnerGym.Microsoft.AspNetCore.StaticWebAssets.props",

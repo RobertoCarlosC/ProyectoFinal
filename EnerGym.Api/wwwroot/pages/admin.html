@@ -536,7 +536,7 @@
           <td style="color:var(--naranja);font-family:'Barlow Condensed',sans-serif;">${escapeHtml(p.nombreCategoria) || '—'}</td>
           <td style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--naranja);">${formatPrice(p.precio)}</td>
           <td>
-            <span class="${p.stock === 0 ? 'stock-badge stock-out' : p.stock < 5 ? 'stock-badge stock-low' : 'stock-badge stock-ok'}">
+            <span class="${p.stock === 0 ? 'stock-badge stock-out' : p.stock < 5 ? 'stock-badge stock-low' : 'stock-badge stock-ok'}" style="color:var(--naranja);">
               ${p.stock}
             </span>
           </td>

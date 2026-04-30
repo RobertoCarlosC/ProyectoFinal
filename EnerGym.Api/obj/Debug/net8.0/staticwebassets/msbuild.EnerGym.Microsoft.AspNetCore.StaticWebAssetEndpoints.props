@@ -1,0 +1,172 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/css/style.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\style.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-Kz5RAgL7tS0fzcDYmhsp4Lvp3sstmkugyoZeiPEJ/tc="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"14508"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022Kz5RAgL7tS0fzcDYmhsp4Lvp3sstmkugyoZeiPEJ/tc=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/css/style.zicfdttr3z.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\style.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"zicfdttr3z"},{"Name":"integrity","Value":"sha256-Kz5RAgL7tS0fzcDYmhsp4Lvp3sstmkugyoZeiPEJ/tc="},{"Name":"label","Value":"_content/EnerGym/css/style.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"14508"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022Kz5RAgL7tS0fzcDYmhsp4Lvp3sstmkugyoZeiPEJ/tc=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/css/styles.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\styles.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-j1VobULsX7LqFns2MRVLSUYPBsK1sVi207d97wj5W9k="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"56665"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022j1VobULsX7LqFns2MRVLSUYPBsK1sVi207d97wj5W9k=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/css/styles.hgeppjf7d2.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\styles.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"hgeppjf7d2"},{"Name":"integrity","Value":"sha256-j1VobULsX7LqFns2MRVLSUYPBsK1sVi207d97wj5W9k="},{"Name":"label","Value":"_content/EnerGym/css/styles.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"56665"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022j1VobULsX7LqFns2MRVLSUYPBsK1sVi207d97wj5W9k=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/index.gittlqi4jt.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"gittlqi4jt"},{"Name":"integrity","Value":"sha256-WMjsu8Ts/ACoyw7mykIOV7WXoLLnJkzf5Jr6VTKBSFs="},{"Name":"label","Value":"_content/EnerGym/index.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"10789"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022WMjsu8Ts/ACoyw7mykIOV7WXoLLnJkzf5Jr6VTKBSFs=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/index.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-WMjsu8Ts/ACoyw7mykIOV7WXoLLnJkzf5Jr6VTKBSFs="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"10789"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022WMjsu8Ts/ACoyw7mykIOV7WXoLLnJkzf5Jr6VTKBSFs=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/js/app.2dqxiedq8f.js">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\app.js'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"2dqxiedq8f"},{"Name":"integrity","Value":"sha256-tp3US86aCOYUASPQghfmITJOeLRAsG7mMAo8x5aUGcI="},{"Name":"label","Value":"_content/EnerGym/js/app.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"14349"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022tp3US86aCOYUASPQghfmITJOeLRAsG7mMAo8x5aUGcI=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/js/app.js">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\app.js'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-tp3US86aCOYUASPQghfmITJOeLRAsG7mMAo8x5aUGcI="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"14349"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022tp3US86aCOYUASPQghfmITJOeLRAsG7mMAo8x5aUGcI=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/js/gestion-pedidos.js">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\gestion-pedidos.js'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-nLgDj15YcpbsgoQOPN9yk2OletKIz/oP9tiM/HsBVQM="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"14893"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022nLgDj15YcpbsgoQOPN9yk2OletKIz/oP9tiM/HsBVQM=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/js/gestion-pedidos.o7ht7532hp.js">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\gestion-pedidos.js'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"o7ht7532hp"},{"Name":"integrity","Value":"sha256-nLgDj15YcpbsgoQOPN9yk2OletKIz/oP9tiM/HsBVQM="},{"Name":"label","Value":"_content/EnerGym/js/gestion-pedidos.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"14893"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022nLgDj15YcpbsgoQOPN9yk2OletKIz/oP9tiM/HsBVQM=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/admin.c9nmg879s4.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\admin.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"c9nmg879s4"},{"Name":"integrity","Value":"sha256-QP8UCk2RTMU1W\u002Bq32AZYsmsxz7xAx5J4NMyyuDPSTAY="},{"Name":"label","Value":"_content/EnerGym/pages/admin.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"57661"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022QP8UCk2RTMU1W\u002Bq32AZYsmsxz7xAx5J4NMyyuDPSTAY=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/admin.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\admin.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-QP8UCk2RTMU1W\u002Bq32AZYsmsxz7xAx5J4NMyyuDPSTAY="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"57661"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022QP8UCk2RTMU1W\u002Bq32AZYsmsxz7xAx5J4NMyyuDPSTAY=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/carrito.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\carrito.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-ezK\u002B78RxbY4zIUsqjyHIWkM5JW100vQxf8VXeJsXmkI="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"19944"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022ezK\u002B78RxbY4zIUsqjyHIWkM5JW100vQxf8VXeJsXmkI=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/carrito.jm9nmvzrww.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\carrito.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"jm9nmvzrww"},{"Name":"integrity","Value":"sha256-ezK\u002B78RxbY4zIUsqjyHIWkM5JW100vQxf8VXeJsXmkI="},{"Name":"label","Value":"_content/EnerGym/pages/carrito.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"19944"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022ezK\u002B78RxbY4zIUsqjyHIWkM5JW100vQxf8VXeJsXmkI=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/checkout.04wtkxy5a1.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\checkout.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"04wtkxy5a1"},{"Name":"integrity","Value":"sha256-MKA1v\u002BTcc6qgstJV0G9fU2GEO0iztKiSiIXUzorXVEM="},{"Name":"label","Value":"_content/EnerGym/pages/checkout.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"16987"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022MKA1v\u002BTcc6qgstJV0G9fU2GEO0iztKiSiIXUzorXVEM=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/checkout.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\checkout.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-MKA1v\u002BTcc6qgstJV0G9fU2GEO0iztKiSiIXUzorXVEM="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"16987"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022MKA1v\u002BTcc6qgstJV0G9fU2GEO0iztKiSiIXUzorXVEM=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/login.7t25ecfg2t.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\login.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"7t25ecfg2t"},{"Name":"integrity","Value":"sha256-ewu29HoCgPdAAGxDmg4UC6zFiYlaSMokj1A0hNhPs1g="},{"Name":"label","Value":"_content/EnerGym/pages/login.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"6121"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022ewu29HoCgPdAAGxDmg4UC6zFiYlaSMokj1A0hNhPs1g=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/login.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\login.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-ewu29HoCgPdAAGxDmg4UC6zFiYlaSMokj1A0hNhPs1g="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"6121"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022ewu29HoCgPdAAGxDmg4UC6zFiYlaSMokj1A0hNhPs1g=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/pedido.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\pedido.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-hzwl5bukVFuAi1HP1jhXa9LgtpiAztr9qLhlmJrLsbA="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"14486"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022hzwl5bukVFuAi1HP1jhXa9LgtpiAztr9qLhlmJrLsbA=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/pedido.trlxnokjuv.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\pedido.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"trlxnokjuv"},{"Name":"integrity","Value":"sha256-hzwl5bukVFuAi1HP1jhXa9LgtpiAztr9qLhlmJrLsbA="},{"Name":"label","Value":"_content/EnerGym/pages/pedido.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"14486"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022hzwl5bukVFuAi1HP1jhXa9LgtpiAztr9qLhlmJrLsbA=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/perfil.2t0izjteuv.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\perfil.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"2t0izjteuv"},{"Name":"integrity","Value":"sha256-llPu8/fG5Zd0eGCR6nGiQni7rkhKodMW2sAE1PAsSfU="},{"Name":"label","Value":"_content/EnerGym/pages/perfil.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"16464"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022llPu8/fG5Zd0eGCR6nGiQni7rkhKodMW2sAE1PAsSfU=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/perfil.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\perfil.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-llPu8/fG5Zd0eGCR6nGiQni7rkhKodMW2sAE1PAsSfU="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"16464"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022llPu8/fG5Zd0eGCR6nGiQni7rkhKodMW2sAE1PAsSfU=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/producto.fsvmpv2jyk.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\producto.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"fsvmpv2jyk"},{"Name":"integrity","Value":"sha256-b79pJFX2NrgpNfCs/oF3gN8hkw7\u002B9lKrg9aNqGc3RWo="},{"Name":"label","Value":"_content/EnerGym/pages/producto.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"21093"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022b79pJFX2NrgpNfCs/oF3gN8hkw7\u002B9lKrg9aNqGc3RWo=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/producto.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\producto.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-b79pJFX2NrgpNfCs/oF3gN8hkw7\u002B9lKrg9aNqGc3RWo="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"21093"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022b79pJFX2NrgpNfCs/oF3gN8hkw7\u002B9lKrg9aNqGc3RWo=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/registro.7zch0chu9d.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\registro.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"7zch0chu9d"},{"Name":"integrity","Value":"sha256-DWRbujG2JdapFBFHYNc8HqOasVvI8YYS4B8YI7L4L6M="},{"Name":"label","Value":"_content/EnerGym/pages/registro.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"6124"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022DWRbujG2JdapFBFHYNc8HqOasVvI8YYS4B8YI7L4L6M=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/registro.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\registro.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-DWRbujG2JdapFBFHYNc8HqOasVvI8YYS4B8YI7L4L6M="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"6124"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022DWRbujG2JdapFBFHYNc8HqOasVvI8YYS4B8YI7L4L6M=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/tienda.49ekq31joc.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\tienda.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"49ekq31joc"},{"Name":"integrity","Value":"sha256-2GTBn5X2\u002BC3tBJnwi8WqDNBCQj3MSR8MhX7N1hILfAo="},{"Name":"label","Value":"_content/EnerGym/pages/tienda.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"7604"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u00222GTBn5X2\u002BC3tBJnwi8WqDNBCQj3MSR8MhX7N1hILfAo=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/EnerGym/pages/tienda.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\pages\tienda.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-2GTBn5X2\u002BC3tBJnwi8WqDNBCQj3MSR8MhX7N1hILfAo="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"7604"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u00222GTBn5X2\u002BC3tBJnwi8WqDNBCQj3MSR8MhX7N1hILfAo=\u0022"},{"Name":"Last-Modified","Value":"Thu, 30 Apr 2026 15:15:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>

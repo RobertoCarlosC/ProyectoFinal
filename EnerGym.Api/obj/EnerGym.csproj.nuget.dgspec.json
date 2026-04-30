@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\adria\\Desktop\\Poyecto\\ProyectoFinal\\EnerGym.Api\\EnerGym.csproj": {}
+    "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\EnerGym.csproj": {}
   },
   "projects": {
-    "C:\\Users\\adria\\Desktop\\Poyecto\\ProyectoFinal\\EnerGym.Api\\EnerGym.csproj": {
+    "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\EnerGym.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\adria\\Desktop\\Poyecto\\ProyectoFinal\\EnerGym.Api\\EnerGym.csproj",
+        "projectUniqueName": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\EnerGym.csproj",
         "projectName": "EnerGym",
-        "projectPath": "C:\\Users\\adria\\Desktop\\Poyecto\\ProyectoFinal\\EnerGym.Api\\EnerGym.csproj",
-        "packagesPath": "C:\\Users\\adria\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\adria\\Desktop\\Poyecto\\ProyectoFinal\\EnerGym.Api\\obj\\",
+        "projectPath": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\EnerGym.csproj",
+        "packagesPath": "C:\\Users\\Adrián\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Adrián\\Desktop\\ProyectoFinal\\EnerGym.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\adria\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Adrián\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -78,7 +78,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
