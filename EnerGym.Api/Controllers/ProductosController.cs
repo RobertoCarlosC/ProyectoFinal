@@ -129,7 +129,7 @@ namespace EnerGym.Controllers
                 if (!reader.Read())
                     return NotFound(new { error = "Producto no encontrado." });
 
-                return Ok(new
+                var producto = new
                 {
                     idProducto      = (int)reader["IdProducto"],
                     nombre          = reader["Nombre"].ToString(),
@@ -141,6 +141,38 @@ namespace EnerGym.Controllers
                     nombreCategoria = reader["NombreCategoria"] == DBNull.Value ? "" : reader["NombreCategoria"].ToString(),
                     tieneLike       = (int)reader["TieneLike"] == 1,
                     totalLikes      = (int)reader["TotalLikes"]
+                };
+                reader.Close();
+
+                var imgCmd = new SqlCommand(
+                    @"SELECT IdImagen, UrlImagen, Orden FROM ProductoImagenes WHERE IdProducto = @Id ORDER BY Orden",
+                    conn);
+                imgCmd.Parameters.AddWithValue("@Id", id);
+                var imagenes = new List<object>();
+                using var imgReader = imgCmd.ExecuteReader();
+                while (imgReader.Read())
+                {
+                    imagenes.Add(new
+                    {
+                        idImagen  = (int)imgReader["IdImagen"],
+                        urlImagen = imgReader["UrlImagen"].ToString(),
+                        orden     = (int)imgReader["Orden"]
+                    });
+                }
+
+                return Ok(new
+                {
+                    producto.idProducto,
+                    producto.nombre,
+                    producto.descripcion,
+                    producto.precio,
+                    producto.stock,
+                    producto.imagen,
+                    producto.idCategoria,
+                    producto.nombreCategoria,
+                    producto.tieneLike,
+                    producto.totalLikes,
+                    imagenes
                 });
             }
             catch (Exception ex)

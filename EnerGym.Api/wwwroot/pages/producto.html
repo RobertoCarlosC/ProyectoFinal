@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EnerGym – Producto</title>
+<link rel="stylesheet" href="/css/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  .producto-page { background: var(--black); min-height: 100vh; }
+  .producto-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 60px 52px;
+  }
+
+  /* Carrusel */
+  .carousel-wrap { position: relative; }
+  .carousel-main {
+    position: relative;
+    width: 100%;
+    height: 520px;
+    background: var(--charcoal);
+    border: 1px solid var(--iron);
+    overflow: hidden;
+  }
+  .carousel-main img {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .carousel-main img.active { opacity: 1; }
+  .carousel-arrow {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--iron);
+    color: var(--white);
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    z-index: 2;
+    font-size: 14px;
+  }
+  .carousel-arrow:hover { background: var(--red); border-color: var(--red); }
+  .carousel-arrow.prev { left: 14px; }
+  .carousel-arrow.next { right: 14px; }
+  .carousel-thumbs {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .carousel-thumbs button {
+    width: 72px; height: 72px;
+    border: 2px solid var(--iron);
+    background: var(--charcoal);
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .carousel-thumbs button img { width: 100%; height: 100%; object-fit: cover; }
+  .carousel-thumbs button.active,
+  .carousel-thumbs button:hover { border-color: var(--red); }
+
+  /* Info */
+  .producto-info { display: flex; flex-direction: column; }
+  .producto-info .section-label { margin-bottom: 14px; }
+  .producto-info h1 {
+    font-family: var(--font-impact);
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 18px;
+  }
+  .producto-info .prod-price {
+    font-family: var(--font-cond);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--red);
+    margin-bottom: 28px;
+  }
+  .producto-info .prod-desc {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--light);
+    margin-bottom: 32px;
+    white-space: pre-line;
+  }
+  .producto-meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .stock-badge {
+    font-family: var(--font-cond);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1px solid var(--iron);
+    color: var(--smoke);
+  }
+  .stock-badge.agotado { color: var(--red); border-color: var(--red); background: var(--red-glow); }
+  .stock-badge.bajo { color: #ffaa00; border-color: #ffaa00; }
+
+  /* Cantidad */
+  .qty-selector {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--iron);
+    width: fit-content;
+    margin-bottom: 28px;
+  }
+  .qty-selector button {
+    background: var(--steel);
+    border: none;
+    color: var(--white);
+    width: 44px; height: 44px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .qty-selector button:hover { background: var(--iron); }
+  .qty-selector button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .qty-selector input {
+    width: 60px;
+    text-align: center;
+    background: var(--black);
+    border: none;
+    border-left: 1px solid var(--iron);
+    border-right: 1px solid var(--iron);
+    color: var(--white);
+    font-family: var(--font-cond);
+    font-size: 16px;
+    font-weight: 700;
+    height: 44px;
+    outline: none;
+  }
+  .qty-selector input::-webkit-outer-spin-button,
+  .qty-selector input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+  .producto-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-add-cart-lg {
+    background: var(--red);
+    color: var(--white);
+    font-family: var(--font-cond);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 16px 44px;
+    border: 2px solid var(--red);
+    cursor: pointer;
+    transition: all 0.22s;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+  .btn-add-cart-lg:hover {
+    background: transparent;
+    color: var(--red);
+    box-shadow: 0 0 20px var(--red-glow);
+  }
+  .btn-add-cart-lg:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--ash);
+    border-color: var(--ash);
+    color: var(--smoke);
+    box-shadow: none;
+  }
+  .btn-wish-lg {
+    background: var(--steel);
+    border: 1px solid var(--iron);
+    color: var(--light);
+    width: 56px; height: 56px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .btn-wish-lg:hover { background: var(--iron); color: var(--red); }
+  .btn-wish-lg.active { color: var(--red); border-color: var(--red); }
+
+  .producto-extra {
+    margin-top: 44px;
+    padding-top: 32px;
+    border-top: 1px solid var(--iron);
+  }
+  .producto-extra h4 {
+    font-family: var(--font-cond);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 14px;
+    border-left: 3px solid var(--red);
+    padding-left: 10px;
+  }
+  .producto-extra ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .producto-extra li {
+    font-size: 14px;
+    color: var(--smoke);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .producto-extra li i { color: var(--red); font-size: 12px; }
+
+  .breadcrumb {
+    font-family: var(--font-cond);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--smoke);
+    margin-bottom: 24px;
+  }
+  .breadcrumb a { color: var(--smoke); transition: color 0.2s; }
+  .breadcrumb a:hover { color: var(--red); }
+  .breadcrumb span { color: var(--red); margin: 0 8px; }
+
+  @media(max-width: 980px) {
+    .producto-main { grid-template-columns: 1fr; gap: 40px; padding: 40px 24px; }
+    .carousel-main { height: 380px; }
+    .producto-info h1 { font-size: 38px; }
+  }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+
+<div class="topbar">
+<div class="topbar-track">
+<span>ENVÍO GRATIS EN PEDIDOS MAYORES A 49€ &nbsp;&#47;&#47;&nbsp; NUEVA COLECCIÓN 2026 &nbsp;&#47;&#47;&nbsp; CALIDAD PREMIUM GARANTIZADA &nbsp;&#47;&#47;&nbsp; ENVÍO GRATIS EN PEDIDOS MAYORES A 49€ &nbsp;&#47;&#47;&nbsp; NUEVA COLECCIÓN 2026 &nbsp;&#47;&#47;&nbsp; CALIDAD PREMIUM GARANTIZADA &nbsp;&#47;&#47;&nbsp;</span>
+<span aria-hidden="true">ENVÍO GRATIS EN PEDIDOS MAYORES A 49€ &nbsp;&#47;&#47;&nbsp; NUEVA COLECCIÓN 2026 &nbsp;&#47;&#47;&nbsp; CALIDAD PREMIUM GARANTIZADA &nbsp;&#47;&#47;&nbsp;</span>
+</div>
+</div>
+
+<header class="navbar">
+<div class="nav-left">
+  <nav>
+    <a href="/index.html">INICIO</a>
+    <a href="/pages/tienda.html">PRODUCTOS</a>
+    <a href="/pages/tienda.html">COLECCIONES</a>
+    <a href="#">NOSOTROS</a>
+  </nav>
+</div>
+<div class="nav-logo"><a href="/index.html"><span>EnerGym</span></a></div>
+<div class="nav-right">
+  <a href="/pages/login.html"><i class="fa-regular fa-user"></i></a>
+  <a href="/pages/login.html"><i class="fa-regular fa-heart"></i></a>
+  <a href="/pages/carrito.html" class="cart-icon">
+    <i class="fa-solid fa-bag-shopping"></i>
+    <span class="cart-count">0</span>
+  </a>
+</div>
+</header>
+
+<div class="producto-page">
+  <div class="producto-main reveal" id="producto-main">
+    <div class="skeleton-product-wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:60px;grid-column:1/-1;">
+      <div>
+        <div class="skeleton" style="width:100%;height:520px;border:1px solid var(--iron);"></div>
+        <div style="display:flex;gap:10px;margin-top:14px;">
+          <div class="skeleton" style="width:72px;height:72px;border:2px solid var(--iron);"></div>
+          <div class="skeleton" style="width:72px;height:72px;border:2px solid var(--iron);"></div>
+          <div class="skeleton" style="width:72px;height:72px;border:2px solid var(--iron);"></div>
+        </div>
+      </div>
+      <div style="padding-top:20px;">
+        <div class="skeleton" style="width:80px;height:14px;margin-bottom:18px;"></div>
+        <div class="skeleton" style="width:70%;height:48px;margin-bottom:18px;"></div>
+        <div class="skeleton" style="width:120px;height:36px;margin-bottom:28px;"></div>
+        <div class="skeleton" style="width:100%;height:14px;margin-bottom:10px;"></div>
+        <div class="skeleton" style="width:90%;height:14px;margin-bottom:10px;"></div>
+        <div class="skeleton" style="width:95%;height:14px;margin-bottom:10px;"></div>
+        <div class="skeleton" style="width:60%;height:14px;margin-bottom:32px;"></div>
+        <div style="display:flex;gap:14px;align-items:center;margin-bottom:28px;">
+          <div class="skeleton" style="width:148px;height:44px;"></div>
+          <div class="skeleton" style="width:56px;height:56px;"></div>
+        </div>
+        <div class="skeleton" style="width:100%;height:1px;margin-bottom:20px;"></div>
+        <div class="skeleton" style="width:160px;height:14px;margin-bottom:14px;"></div>
+        <div class="skeleton" style="width:100%;height:14px;margin-bottom:10px;"></div>
+        <div class="skeleton" style="width:100%;height:14px;margin-bottom:10px;"></div>
+        <div class="skeleton" style="width:90%;height:14px;margin-bottom:10px;"></div>
+        <div class="skeleton" style="width:95%;height:14px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+<div class="footer-top-bar">
+  <div class="footer-logo"><span>EnerGym</span></div>
+  <div class="social-links">
+    <a href="https://www.instagram.com/energym164"><i class="fa-brands fa-instagram"></i></a>
+    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+  </div>
+</div>
+<div class="footer-divider"></div>
+<div class="footer-bottom">
+  <p>© 2026 ENERGYM. TODOS LOS DERECHOS RESERVADOS.</p>
+  <div class="payment-icons">
+    <i class="fa-brands fa-cc-visa"></i>
+    <i class="fa-brands fa-cc-mastercard"></i>
+    <i class="fa-brands fa-cc-paypal"></i>
+  </div>
+</div>
+</footer>
+
+<script src="/js/app.js"></script>
+<script>
+  updateNavbar();
+  updateCartBadge();
+
+  const params = new URLSearchParams(window.location.search);
+  const idProducto = parseInt(params.get('id'));
+  let productoActual = null;
+  let cantidad = 1;
+  let currentSlide = 0;
+
+  if (!idProducto) {
+    document.getElementById('producto-main').innerHTML =
+      '<div class="loading-msg" style="grid-column:1/-1;text-align:center;padding:80px 0;">Producto no encontrado.</div>';
+  } else {
+    cargarProducto();
+  }
+
+  async function cargarProducto() {
+    const user = getSession();
+    const url = user
+      ? `${API_BASE}/productos/${idProducto}?idUsuario=${user.idUsuario}`
+      : `${API_BASE}/productos/${idProducto}`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error();
+      productoActual = await res.json();
+      renderProducto(productoActual);
+    } catch(e) {
+      document.getElementById('producto-main').innerHTML =
+        '<div class="loading-msg" style="grid-column:1/-1;text-align:center;padding:80px 0;">Error al cargar el producto.</div>';
+    }
+  }
+
+  function renderProducto(p) {
+    const stock = p.stock ?? p.Stock ?? 0;
+    const imagenes = Array.isArray(p.imagenes) && p.imagenes.length
+      ? p.imagenes.map(i => i.urlImagen || i.UrlImagen)
+      : [p.imagen || p.Imagen || ''];
+    const nombre = p.nombre || p.Nombre || '';
+    const descripcion = p.descripcion || p.Descripcion || '';
+    const precio = p.precio ?? p.Precio ?? 0;
+    const nombreCategoria = p.nombreCategoria || p.NombreCategoria || '';
+    const liked = p.tieneLike || p.TieneLike || false;
+
+    let stockBadge = '';
+    if (stock === 0) stockBadge = `<span class="stock-badge agotado">Agotado</span>`;
+    else if (stock < 10) stockBadge = `<span class="stock-badge bajo">Solo quedan ${stock}</span>`;
+    else stockBadge = `<span class="stock-badge">En stock</span>`;
+
+    const user = getSession();
+    const wishBtn = user
+      ? `<button class="btn-wish-lg ${liked ? 'active' : ''}" id="btn-wish" onclick="toggleLikeProducto()" title="Me gusta">
+           <i class="${liked ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+         </button>`
+      : '';
+
+    const slidesHtml = imagenes.map((img, idx) =>
+      `<img src="${img}" alt="${nombre}" class="${idx === 0 ? 'active' : ''}" data-index="${idx}" onerror="this.style.display='none'">`
+    ).join('');
+
+    const thumbsHtml = imagenes.map((img, idx) =>
+      `<button class="${idx === 0 ? 'active' : ''}" onclick="goToSlide(${idx})" data-thumb="${idx}">
+         <img src="${img}" alt="">
+       </button>`
+    ).join('');
+
+    const container = document.getElementById('producto-main');
+    container.innerHTML = `
+      <div class="carousel-wrap reveal-left">
+        <div class="breadcrumb">
+          <a href="/pages/tienda.html">Tienda</a> <span>/</span> ${nombreCategoria} <span>/</span> <span style="color:var(--light)">${nombre}</span>
+        </div>
+        <div class="carousel-main" id="carousel-main">
+          ${slidesHtml}
+          <button class="carousel-arrow prev" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="carousel-arrow next" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <div class="carousel-thumbs">${thumbsHtml}</div>
+      </div>
+      <div class="producto-info reveal-right">
+        <div class="section-label">// ${nombreCategoria}</div>
+        <h1>${nombre}</h1>
+        <div class="prod-price">${formatPrice(precio)}</div>
+        <div class="producto-meta">
+          ${stockBadge}
+          ${p.totalLikes || p.TotalLikes ? `<span style="color:var(--smoke);font-family:var(--font-cond);font-size:12px;"><i class="fa-solid fa-heart" style="color:var(--red);margin-right:4px;"></i>${p.totalLikes || p.TotalLikes} me gusta</span>` : ''}
+        </div>
+        <div class="prod-desc">${descripcion}</div>
+        <div class="qty-selector">
+          <button onclick="changeQty(-1)" id="qty-minus">-</button>
+          <input type="number" id="qty-input" value="1" min="1" max="${stock}" readonly>
+          <button onclick="changeQty(1)" id="qty-plus">+</button>
+        </div>
+        <div class="producto-actions">
+          <button class="btn-add-cart-lg" id="btn-add-cart" onclick="agregarAlCarrito()" ${stock === 0 ? 'disabled' : ''}>
+            ${stock === 0 ? 'AGOTADO' : 'AÑADIR AL CARRITO'}
+          </button>
+          ${wishBtn}
+        </div>
+        <div class="producto-extra">
+          <h4>Detalles del producto</h4>
+          <ul>
+            <li><i class="fa-solid fa-check"></i> Envío en 24-48h</li>
+            <li><i class="fa-solid fa-check"></i> Pago seguro con tarjeta o PayPal</li>
+            <li><i class="fa-solid fa-check"></i> Devolución gratuita en 30 días</li>
+            <li><i class="fa-solid fa-check"></i> Producto original garantizado</li>
+          </ul>
+        </div>
+      </div>
+    `;
+    currentSlide = 0;
+    cantidad = 1;
+    if (window.initRevealObserver) initRevealObserver();
+  }
+
+  function changeQty(delta) {
+    const stock = productoActual.stock ?? productoActual.Stock ?? 0;
+    const input = document.getElementById('qty-input');
+    let val = parseInt(input.value) + delta;
+    if (val < 1) val = 1;
+    if (val > stock) val = stock;
+    input.value = val;
+    cantidad = val;
+  }
+
+  function goToSlide(idx) {
+    const imgs = document.querySelectorAll('#carousel-main img');
+    const thumbs = document.querySelectorAll('.carousel-thumbs button');
+    imgs.forEach(i => i.classList.remove('active'));
+    thumbs.forEach(t => t.classList.remove('active'));
+    if (imgs[idx]) imgs[idx].classList.add('active');
+    if (thumbs[idx]) thumbs[idx].classList.add('active');
+    currentSlide = idx;
+  }
+
+  function prevSlide() {
+    const total = document.querySelectorAll('#carousel-main img').length;
+    goToSlide((currentSlide - 1 + total) % total);
+  }
+  function nextSlide() {
+    const total = document.querySelectorAll('#carousel-main img').length;
+    goToSlide((currentSlide + 1) % total);
+  }
+
+  async function agregarAlCarrito() {
+    const user = getSession();
+    if (!user) { window.location.href = '/pages/login.html'; return; }
+    const stock = productoActual.stock ?? productoActual.Stock ?? 0;
+    if (cantidad > stock) { showToast('No hay suficiente stock', 'error'); return; }
+    try {
+      const res = await fetch(`${API_BASE}/carrito/agregar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idUsuario: user.idUsuario, idProducto: idProducto, cantidad: cantidad })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast(`Añadido ${cantidad} al carrito ✓`, 'success');
+        await updateCartBadge();
+        updateNavbar();
+      } else {
+        showToast(data.error || 'Error al añadir al carrito', 'error');
+      }
+    } catch (e) {
+      showToast('Error de conexión con el servidor', 'error');
+    }
+  }
+
+  async function toggleLikeProducto() {
+    const user = getSession();
+    if (!user) { window.location.href = '/pages/login.html'; return; }
+    const btn = document.getElementById('btn-wish');
+    try {
+      const res = await fetch(`${API_BASE}/likes/toggle`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idUsuario: user.idUsuario, idProducto: idProducto })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        const liked = data.liked;
+        btn.classList.toggle('active', liked);
+        btn.querySelector('i').className = liked ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+        showToast(liked ? 'Añadido a favoritos ✓' : 'Eliminado de favoritos', 'info');
+      } else {
+        showToast(data.error || 'Error', 'error');
+      }
+    } catch (e) {
+      showToast('Error de conexión', 'error');
+    }
+  }
+</script>
+</body>
+</html>

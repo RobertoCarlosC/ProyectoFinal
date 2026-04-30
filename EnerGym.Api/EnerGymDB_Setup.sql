@@ -185,6 +185,21 @@ ELSE PRINT '– Tabla PedidoProductos ya existe.';
 GO
 
 
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ProductoImagenes' AND xtype='U')
+BEGIN
+    CREATE TABLE ProductoImagenes (
+        IdImagen   INT            PRIMARY KEY IDENTITY(1,1),
+        IdProducto INT            NOT NULL,
+        UrlImagen  NVARCHAR(500)  NOT NULL,
+        Orden      INT            NOT NULL DEFAULT 0,
+        CONSTRAINT FK_ProductoImagenes_Productos FOREIGN KEY (IdProducto) REFERENCES Productos(IdProducto) ON DELETE CASCADE
+    );
+    PRINT '✓ Tabla ProductoImagenes creada.';
+END
+ELSE PRINT '– Tabla ProductoImagenes ya existe.';
+GO
+
+
 IF NOT EXISTS (SELECT 1 FROM Roles WHERE IdRol = 1)
 BEGIN
     SET IDENTITY_INSERT Roles ON;
@@ -299,6 +314,40 @@ ELSE PRINT '– Productos ya existen.';
 GO
 
 
+IF NOT EXISTS (SELECT 1 FROM ProductoImagenes)
+BEGIN
+    INSERT INTO ProductoImagenes (IdProducto, UrlImagen, Orden) VALUES
+    (1, 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=600&q=80', 0),
+    (1, 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80', 1),
+    (1, 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80', 2),
+    (2, 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80', 0),
+    (2, 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80', 1),
+    (3, 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=600&q=80', 0),
+    (3, 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80', 1),
+    (4, 'https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=600&q=80', 0),
+    (4, 'https://images.unsplash.com/photo-1548690312-e3b507d8c110?w=600&q=80', 1),
+    (5, 'https://images.unsplash.com/photo-1548690312-e3b507d8c110?w=600&q=80', 0),
+    (5, 'https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=600&q=80', 1),
+    (6, 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80', 0),
+    (6, 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80', 1),
+    (7, 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80', 0),
+    (7, 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=600&q=80', 1),
+    (8, 'https://images.unsplash.com/photo-1577401132921-cb39bb0adcff?w=600&q=80', 0),
+    (8, 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=600&q=80', 1),
+    (9, 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=600&q=80', 0),
+    (9, 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80', 1),
+    (10, 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80', 0),
+    (10, 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80', 1),
+    (11, 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=600&q=80', 0),
+    (11, 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80', 1),
+    (12, 'https://images.unsplash.com/photo-1590779033100-9f60a05a013d?w=600&q=80', 0),
+    (12, 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80', 1);
+    PRINT '✓ Imágenes adicionales de productos insertadas.';
+END
+ELSE PRINT '– Imágenes de productos ya existen.';
+GO
+
+
 SELECT 'Roles'            AS Tabla, COUNT(*) AS Registros FROM Roles          UNION ALL
 SELECT 'Usuarios',                  COUNT(*)              FROM Usuarios        UNION ALL
 SELECT 'Categorias',                COUNT(*)              FROM Categorias      UNION ALL
@@ -307,7 +356,8 @@ SELECT 'Carritos',                  COUNT(*)              FROM Carritos        U
 SELECT 'CarritoProductos',          COUNT(*)              FROM CarritoProductos UNION ALL
 SELECT 'LikesProductos',            COUNT(*)              FROM LikesProductos  UNION ALL
 SELECT 'Pedidos',                   COUNT(*)              FROM Pedidos         UNION ALL
-SELECT 'PedidoProductos',           COUNT(*)              FROM PedidoProductos;
+SELECT 'PedidoProductos',           COUNT(*)              FROM PedidoProductos UNION ALL
+SELECT 'ProductoImagenes',          COUNT(*)              FROM ProductoImagenes;
 
 PRINT '';
 PRINT '============================================';

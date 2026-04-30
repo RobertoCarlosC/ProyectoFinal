@@ -120,6 +120,14 @@ namespace EnerGym.Models
         public int IdProducto { get; set; }
     }
 
+    public class ProductoImagen
+    {
+        public int IdImagen { get; set; }
+        public int IdProducto { get; set; }
+        public string UrlImagen { get; set; } = "";
+        public int Orden { get; set; }
+    }
+
     public class ProductoDto
     {
         public string Nombre { get; set; } = "";

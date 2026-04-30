@@ -12,7 +12,7 @@
 <div class="noise"></div>
 
 <div class="auth-page">
-  <div class="auth-card">
+  <div class="auth-card anim-scale-soft">
     <div class="auth-logo">Ener<span>Gym</span></div>
     <div class="auth-subtitle">Suplementación de élite</div>
 
@@ -59,6 +59,7 @@
 
 <script src="/js/app.js"></script>
 <script>
+  // Si ya hay sesión activa, redirigir
   const sesionActiva = getSession();
   if (sesionActiva) {
     window.location.href = sesionActiva.idRol === 1 ? '/pages/admin.html' : '/index.html';
