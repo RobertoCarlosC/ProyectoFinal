@@ -157,7 +157,10 @@
     <div class="sidebar-badge">Panel Admin</div>
 
     <nav>
-      <div class="admin-nav-item active" onclick="showTab('productos', this)">
+      <div class="admin-nav-item active" onclick="showTab('pedidos', this)">
+        <span>📦</span><span>Pedidos</span>
+      </div>
+      <div class="admin-nav-item" onclick="showTab('productos', this)">
         <span>📦</span><span>Productos</span>
       </div>
       <div class="admin-nav-item" onclick="showTab('usuarios', this)">
@@ -175,8 +178,74 @@
   
   <div class="admin-main reveal">
 
-    
-    <div class="tab-content active reveal-scale" id="tab-productos">
+    <!-- ===== TAB PEDIDOS ===== -->
+    <div class="tab-content active reveal-scale" id="tab-pedidos">
+      <div class="admin-header">
+        <h1 class="admin-page-title">Pedidos</h1>
+      </div>
+
+      <!-- Estadísticas -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem;">
+        <div style="background:var(--gris);border:1px solid var(--borde);padding:1rem;border-radius:4px;">
+          <div style="color:var(--texto2);font-size:0.85rem;margin-bottom:0.5rem;">Total Pedidos</div>
+          <div id="stat-total" style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--naranja);">0</div>
+        </div>
+        <div style="background:var(--gris);border:1px solid var(--borde);padding:1rem;border-radius:4px;">
+          <div style="color:var(--texto2);font-size:0.85rem;margin-bottom:0.5rem;">Pendientes</div>
+          <div id="stat-pendientes" style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#ef4444;">0</div>
+        </div>
+        <div style="background:var(--gris);border:1px solid var(--borde);padding:1rem;border-radius:4px;">
+          <div style="color:var(--texto2);font-size:0.85rem;margin-bottom:0.5rem;">En Proceso</div>
+          <div id="stat-proceso" style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#f59e0b;">0</div>
+        </div>
+        <div style="background:var(--gris);border:1px solid var(--borde);padding:1rem;border-radius:4px;">
+          <div style="color:var(--texto2);font-size:0.85rem;margin-bottom:0.5rem;">Enviados</div>
+          <div id="stat-enviados" style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#3b82f6;">0</div>
+        </div>
+        <div style="background:var(--gris);border:1px solid var(--borde);padding:1rem;border-radius:4px;">
+          <div style="color:var(--texto2);font-size:0.85rem;margin-bottom:0.5rem;">Entregados</div>
+          <div id="stat-entregados" style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#22c55e;">0</div>
+        </div>
+        <div style="background:var(--gris);border:1px solid var(--borde);padding:1rem;border-radius:4px;">
+          <div style="color:var(--texto2);font-size:0.85rem;margin-bottom:0.5rem;">Ventas Total</div>
+          <div id="stat-ventas" style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--verde);">0,00 €</div>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+        <button class="filtro-estado active" onclick="filtrarPorEstado('')" style="padding:0.5rem 1rem;background:var(--naranja);color:var(--blanco);border:none;border-radius:2px;cursor:pointer;font-size:0.85rem;font-weight:600;">✓ Todos</button>
+        <button class="filtro-estado" onclick="filtrarPorEstado('Pendiente')" style="padding:0.5rem 1rem;background:transparent;border:1px solid #ef4444;color:#ef4444;border-radius:2px;cursor:pointer;font-size:0.85rem;font-weight:600;">Pendiente</button>
+        <button class="filtro-estado" onclick="filtrarPorEstado('Procesando')" style="padding:0.5rem 1rem;background:transparent;border:1px solid #f59e0b;color:#f59e0b;border-radius:2px;cursor:pointer;font-size:0.85rem;font-weight:600;">Procesando</button>
+        <button class="filtro-estado" onclick="filtrarPorEstado('Enviado')" style="padding:0.5rem 1rem;background:transparent;border:1px solid #3b82f6;color:#3b82f6;border-radius:2px;cursor:pointer;font-size:0.85rem;font-weight:600;">Enviado</button>
+        <button class="filtro-estado" onclick="filtrarPorEstado('Entregado')" style="padding:0.5rem 1rem;background:transparent;border:1px solid #22c55e;color:#22c55e;border-radius:2px;cursor:pointer;font-size:0.85rem;font-weight:600;">Entregado</button>
+      </div>
+
+      <!-- Tabla de pedidos -->
+      <div style="background:var(--gris);border:1px solid var(--borde);overflow-x:auto;">
+        <div id="pedidos-loading" class="text-center py-4">
+          <div class="spinner-border text-warning" role="status"></div>
+        </div>
+        <table class="admin-table" id="pedidos-table" style="display:none;">
+          <thead>
+            <tr>
+              <th>#Pedido</th>
+              <th>Cliente</th>
+              <th>Email</th>
+              <th>Fecha</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Items</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="pedidos-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== TAB PRODUCTOS ===== -->
+    <div class="tab-content reveal-scale" id="tab-productos">
       <div class="admin-header">
         <h1 class="admin-page-title">Productos</h1>
         <button onclick="toggleForm()" class="btn-fire" style="clip-path:none;border-radius:2px;" id="btn-toggle-form">
@@ -744,9 +813,114 @@
       btn.disabled = false;
     }
 
+    // ===== INITIALIZACIÓN =====
+    function showTab(name, navEl) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.admin-nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById(`tab-${name}`).classList.add('active');
+      if (navEl) navEl.classList.add('active');
+
+      if (name === 'usuarios') loadUsuarios();
+      if (name === 'productos') loadProductos();
+      if (name === 'pedidos') loadPedidosAdmin();
+    }
+
     // Init
     loadProductos();
     loadCategorias();
+    loadPedidosAdmin();
   </script>
+
+  <!-- Modal para detalles de pedidos -->
+  <div id="modal-detalle-pedido" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;align-items:center;justify-content:center;overflow-y:auto;padding:2rem 1rem;">
+    <div style="background:var(--gris);border:1px solid var(--borde);max-width:900px;width:100%;padding:2rem;border-radius:4px;">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:1.5rem;">
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--texto2);margin-bottom:0.5rem;">Número de Pedido</div>
+          <div id="detalle-numero" style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--blanco);">---</div>
+        </div>
+        <button onclick="cerrarModalDetalle()" style="background:transparent;border:none;font-size:1.5rem;color:var(--texto2);cursor:pointer;">✕</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:2rem;">
+        <div style="background:var(--oscuro);padding:1rem;border-radius:2px;">
+          <div style="color:var(--texto2);font-size:0.8rem;margin-bottom:0.5rem;">Cliente</div>
+          <div id="detalle-usuario" style="color:var(--blanco);font-weight:600;">—</div>
+          <div id="detalle-email" style="color:var(--texto2);font-size:0.85rem;">—</div>
+        </div>
+        <div style="background:var(--oscuro);padding:1rem;border-radius:2px;">
+          <div style="color:var(--texto2);font-size:0.8rem;margin-bottom:0.5rem;">Fecha del Pedido</div>
+          <div id="detalle-fecha" style="color:var(--blanco);font-weight:600;">—</div>
+        </div>
+        <div style="background:var(--oscuro);padding:1rem;border-radius:2px;text-align:right;">
+          <div style="color:var(--texto2);font-size:0.8rem;margin-bottom:0.5rem;">Estado Actual</div>
+          <div id="detalle-estado">—</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;color:var(--blanco);margin-bottom:1rem;">Productos</h3>
+        <table class="admin-table" style="width:100%;">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Producto</th>
+              <th style="text-align:center;">Cantidad</th>
+              <th style="text-align:right;">Precio Unit.</th>
+              <th style="text-align:right;">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-productos-detalle"></tbody>
+        </table>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;">
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;letter-spacing:2px;text-transform:uppercase;color:var(--texto2);font-size:0.9rem;margin-bottom:0.75rem;">Dirección de Envío</div>
+          <div id="detalle-direccion" style="color:var(--blanco);font-size:0.95rem;line-height:1.6;">—</div>
+        </div>
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;letter-spacing:2px;text-transform:uppercase;color:var(--texto2);font-size:0.9rem;margin-bottom:0.75rem;">Método de Pago</div>
+          <div id="detalle-pago" style="color:var(--blanco);font-size:0.95rem;">—</div>
+        </div>
+      </div>
+
+      <div style="background:var(--oscuro);padding:1rem;border-radius:2px;margin-bottom:2rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;color:var(--texto2);">Total del Pedido</span>
+          <span id="detalle-total" style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--naranja);">0,00 €</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;border-top:1px solid var(--borde);padding-top:1rem;">
+        <label style="color:var(--texto2);font-size:0.9rem;margin-bottom:0.5rem;display:block;">Notas sobre el cambio de estado:</label>
+        <textarea id="notas-cambio-estado" style="width:100%;background:var(--oscuro);border:1px solid var(--borde);color:var(--texto);padding:0.75rem;border-radius:2px;resize:vertical;font-family:'Barlow',sans-serif;" rows="2" placeholder="Opcional: Agregar una nota sobre el cambio de estado..."></textarea>
+      </div>
+
+      <div style="background:var(--oscuro);padding:1rem;border-radius:2px;margin-bottom:1.5rem;border-left:3px solid var(--naranja);">
+        <div style="font-family:'Bebas Neue',sans-serif;fontSize:0.9rem;letter-spacing:1px;text-transform:uppercase;color:var(--naranja);margin-bottom:0.75rem;">🔄 Cambiar Estado</div>
+        <select id="nuevo-estado-select" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--borde);color:var(--blanco);padding:0.75rem;border-radius:2px;font-family:'Barlow',sans-serif;margin-bottom:1rem;">
+          <option value="Pendiente">Pendiente</option>
+          <option value="Procesando">Procesando</option>
+          <option value="Enviado">Enviado</option>
+          <option value="En reparto">En Reparto</option>
+          <option value="Entregado">Entregado</option>
+        </select>
+        <button onclick="cambiarEstadoPedido(document.getElementById('nuevo-estado-select').value)" class="btn-fire" style="width:100%;clip-path:none;border-radius:2px;">
+          💾 Guardar Cambio
+        </button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;">
+        <button id="btn-marcar-procesando" onclick="marcarProcesando()" class="btn-dark-sm" style="padding:0.75rem;display:none;">⚙️ Procesando</button>
+        <button id="btn-marcar-enviado" onclick="marcarEnviado()" class="btn-dark-sm" style="padding:0.75rem;display:none;">📦 Enviado</button>
+        <button id="btn-marcar-reparto" onclick="marcarEnReparto()" class="btn-dark-sm" style="padding:0.75rem;display:none;">🚚 En Reparto</button>
+      </div>
+
+      <button onclick="cerrarModalDetalle()" class="btn-dark-sm" style="width:100%;margin-top:1rem;padding:0.75rem;">Cerrar</button>
+    </div>
+  </div>
+
+  <script src="/js/gestion-pedidos.js"></script>
 </body>
 </html>

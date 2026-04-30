@@ -146,13 +146,15 @@ GO
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Pedidos' AND xtype='U')
 BEGIN
     CREATE TABLE Pedidos (
-        IdPedido       INT           PRIMARY KEY IDENTITY(1,1),
-        IdUsuario      INT           NOT NULL,
-        Fecha          DATETIME      NOT NULL DEFAULT GETDATE(),
-        Total          DECIMAL(10,2) NOT NULL,
-        Estado         NVARCHAR(50)  NOT NULL DEFAULT 'Pendiente',
-        DireccionEnvio NVARCHAR(500) NULL,
-        MetodoPago     NVARCHAR(50)  NULL,
+        IdPedido                   INT           PRIMARY KEY IDENTITY(1,1),
+        IdUsuario                  INT           NOT NULL,
+        Fecha                      DATETIME      NOT NULL DEFAULT GETDATE(),
+        Total                      DECIMAL(10,2) NOT NULL,
+        Estado                     NVARCHAR(50)  NOT NULL DEFAULT 'Pendiente',
+        DireccionEnvio             NVARCHAR(500) NULL,
+        MetodoPago                 NVARCHAR(50)  NULL,
+        FechaConfirmacionEntrega   DATETIME      NULL,
+        FechaActualizacion         DATETIME      NOT NULL DEFAULT GETDATE(),
         CONSTRAINT FK_Pedidos_Usuarios FOREIGN KEY (IdUsuario) REFERENCES Usuarios(IdUsuario)
     );
     PRINT '✓ Tabla Pedidos creada.';
@@ -174,6 +176,16 @@ BEGIN
         ALTER TABLE Pedidos ADD MetodoPago NVARCHAR(50) NULL;
         PRINT '✓ Columna MetodoPago añadida a Pedidos.';
     END
+    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='Pedidos' AND COLUMN_NAME='FechaConfirmacionEntrega')
+    BEGIN
+        ALTER TABLE Pedidos ADD FechaConfirmacionEntrega DATETIME NULL;
+        PRINT '✓ Columna FechaConfirmacionEntrega añadida a Pedidos.';
+    END
+    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='Pedidos' AND COLUMN_NAME='FechaActualizacion')
+    BEGIN
+        ALTER TABLE Pedidos ADD FechaActualizacion DATETIME NOT NULL DEFAULT GETDATE();
+        PRINT '✓ Columna FechaActualizacion añadida a Pedidos.';
+    END
     PRINT '– Tabla Pedidos ya existe.';
 END
 GO
@@ -194,6 +206,25 @@ BEGIN
 END
 ELSE PRINT '– Tabla PedidoProductos ya existe.';
 GO
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='PedidoHistorialEstados' AND xtype='U')
+BEGIN
+    CREATE TABLE PedidoHistorialEstados (
+        IdHistorial INT          PRIMARY KEY IDENTITY(1,1),
+        IdPedido    INT          NOT NULL,
+        EstadoAnterior NVARCHAR(50),
+        EstadoNuevo NVARCHAR(50) NOT NULL,
+        Fecha       DATETIME     NOT NULL DEFAULT GETDATE(),
+        CambiadoPor NVARCHAR(100) NULL,
+        Notas       NVARCHAR(500) NULL,
+        CONSTRAINT FK_PedidoHistorial_Pedidos FOREIGN KEY (IdPedido) REFERENCES Pedidos(IdPedido) ON DELETE CASCADE
+    );
+    PRINT '✓ Tabla PedidoHistorialEstados creada.';
+END
+ELSE PRINT '– Tabla PedidoHistorialEstados ya existe.';
+GO
+
 
 
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ProductoImagenes' AND xtype='U')

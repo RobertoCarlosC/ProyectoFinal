@@ -208,5 +208,73 @@ namespace EnerGym.Models
         public string Estado { get; set; } = "";
         public int CantidadProductos { get; set; }
     }
+
+    // ===== DTOs para gestión de pedidos y envíos =====
+
+    public class PedidoExtendidoDto
+    {
+        public int IdPedido { get; set; }
+        public int IdUsuario { get; set; }
+        public string UsuarioNombre { get; set; } = "";
+        public string UsuarioEmail { get; set; } = "";
+        public DateTime Fecha { get; set; }
+        public DateTime? FechaActualizacion { get; set; }
+        public DateTime? FechaConfirmacionEntrega { get; set; }
+        public decimal Total { get; set; }
+        public string Estado { get; set; } = "";
+        public string? DireccionEnvio { get; set; }
+        public string? MetodoPago { get; set; }
+        public List<PedidoDetalle> Detalles { get; set; } = new();
+        public List<HistorialEstadoPedidoDto> Historial { get; set; } = new();
+    }
+
+    public class HistorialEstadoPedidoDto
+    {
+        public int IdHistorial { get; set; }
+        public int IdPedido { get; set; }
+        public string? EstadoAnterior { get; set; }
+        public string EstadoNuevo { get; set; } = "";
+        public DateTime Fecha { get; set; }
+        public string? CambiadoPor { get; set; }
+        public string? Notas { get; set; }
+    }
+
+    public class CambiarEstadoPedidoAdminDto
+    {
+        public int IdPedido { get; set; }
+        public string NuevoEstado { get; set; } = "";
+        public string? Notas { get; set; }
+        public int IdAdmin { get; set; }
+    }
+
+    public class ConfirmarEntregaDto
+    {
+        public int IdPedido { get; set; }
+        public int IdUsuario { get; set; }
+    }
+
+    public class ListaPedidosAdminDto
+    {
+        public int IdPedido { get; set; }
+        public int IdUsuario { get; set; }
+        public string UsuarioNombre { get; set; } = "";
+        public string UsuarioEmail { get; set; } = "";
+        public DateTime Fecha { get; set; }
+        public decimal Total { get; set; }
+        public string Estado { get; set; } = "";
+        public int CantidadProductos { get; set; }
+        public string? DireccionEnvio { get; set; }
+    }
+
+    public class EstadisticasPedidosDto
+    {
+        public int TotalPedidos { get; set; }
+        public int PendientesConfirmacion { get; set; }
+        public int EnProceso { get; set; }
+        public int Enviados { get; set; }
+        public int Entregados { get; set; }
+        public decimal VentasTotal { get; set; }
+        public decimal PromedioVenta { get; set; }
+    }
 }
 

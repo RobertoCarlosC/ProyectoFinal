@@ -91,6 +91,20 @@
           <div id="res-pago" style="color:var(--smoke);font-family:var(--font-body);font-size:0.9rem;"></div>
         </div>
 
+        <!-- Estado del envío -->
+        <div style="background:rgba(255,85,0,0.08);border:1px solid rgba(255,85,0,0.2);padding:1rem;border-radius:2px;margin-bottom:1.5rem;">
+          <div style="font-family:var(--font-cond);letter-spacing:0.1em;text-transform:uppercase;color:var(--smoke);font-size:0.75rem;margin-bottom:0.75rem;">Estado del Envío</div>
+          <div id="env-timeline" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
+        </div>
+
+        <!-- Botón confirmar entrega -->
+        <div id="btn-confirmar-entrega-container" style="display:none;margin-bottom:1.5rem;">
+          <button onclick="confirmarEntrega()" class="btn-fire w-100" style="clip-path:none;border-radius:2px;padding:0.85rem;">
+            ✅ He recibido mi pedido
+          </button>
+          <p style="color:var(--smoke);font-size:0.75rem;margin-top:0.5rem;text-align:center;">Confirma cuando hayas recibido tu pedido</p>
+        </div>
+
         <a href="/pages/perfil.html" class="btn-outline-fire w-100">Volver a mis pedidos</a>
         <a href="/pages/tienda.html" class="btn-fire w-100 mt-3" style="clip-path:none;border-radius:2px;">Seguir comprando</a>
       </aside>
@@ -143,10 +157,11 @@
     function renderPedido(data) {
       const p = data.pedido;
       const productos = data.productos || [];
+      const user = getSession();
 
       // Header
       document.getElementById('pedido-numero').textContent = `#${p.idPedido}`;
-      const estadoColor = p.estado === 'Entregado' ? '#22c55e' : (p.estado === 'Enviado' ? '#3b82f6' : 'var(--red)');
+      const estadoColor = p.estado === 'Entregado' ? '#22c55e' : (p.estado === 'Enviado' || p.estado === 'En reparto' ? '#3b82f6' : 'var(--red)');
       document.getElementById('pedido-estado').innerHTML =
         `<span style="background:${estadoColor};color:var(--white);padding:0.35rem 0.75rem;border-radius:2px;font-size:0.75rem;font-family:var(--font-cond);letter-spacing:0.08em;text-transform:uppercase;">${escapeHtml(p.estado)}</span>`;
       document.getElementById('pedido-fecha').textContent = new Date(p.fecha).toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' });
@@ -184,9 +199,88 @@
       document.getElementById('res-direccion').textContent = p.direccionEnvio || 'No especificada';
       document.getElementById('res-pago').textContent = p.metodoPago || 'No especificado';
 
+      // Timeline de envío
+      const estados = [
+        { nombre: 'Pendiente', icono: '⏳', key: 'Pendiente' },
+        { nombre: 'Procesando', icono: '⚙️', key: 'Procesando' },
+        { nombre: 'Enviado', icono: '📦', key: 'Enviado' },
+        { nombre: 'En Reparto', icono: '🚚', key: 'En reparto' },
+        { nombre: 'Entregado', icono: '✅', key: 'Entregado' }
+      ];
+
+      const estadoActualIdx = estados.findIndex(e => e.key === p.estado);
+      let timelineHTML = '';
+      estados.forEach((e, idx) => {
+        const isActive = idx <= estadoActualIdx;
+        const isComplete = idx < estadoActualIdx;
+        timelineHTML += `
+          <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+            <div style="width:24px;height:24px;border-radius:50%;background:${isActive ? 'var(--red)' : 'var(--iron)'};color:var(--white);display:flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;font-weight:700;">
+              ${isComplete ? '✓' : e.icono}
+            </div>
+            <div>
+              <div style="color:${isActive ? 'var(--white)' : 'var(--smoke)'};font-size:0.85rem;font-weight:${isActive ? '600' : '400'};margin-bottom:0.15rem;">
+                ${e.nombre}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      document.getElementById('env-timeline').innerHTML = timelineHTML;
+
+      // Mostrar botón de confirmación si está en reparto
+      if (p.estado === 'Enviado' || p.estado === 'En reparto') {
+        document.getElementById('btn-confirmar-entrega-container').style.display = 'block';
+      } else {
+        document.getElementById('btn-confirmar-entrega-container').style.display = 'none';
+      }
+
       // Mostrar contenido, ocultar skeleton
       document.getElementById('skeleton-pedido').style.display = 'none';
       document.getElementById('contenido-pedido').style.display = 'grid';
+    }
+
+    async function confirmarEntrega() {
+      const user = getSession();
+      if (!user) {
+        window.location.href = '/pages/login.html';
+        return;
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const idPedido = parseInt(params.get('id'));
+
+      if (!confirm('¿Confirmas que has recibido tu pedido? No podrás deshacer esta acción.')) {
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/pedidos/${idPedido}/confirmar-entrega`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            idPedido,
+            idUsuario: user.idUsuario
+          })
+        });
+
+        const data = await res.json();
+        
+        if (!res.ok) {
+          showToast(`Error: ${data.error || 'No se pudo confirmar'}`, 'error');
+          return;
+        }
+
+        showToast('✅ Entrega confirmada correctamente', 'success');
+        document.getElementById('btn-confirmar-entrega-container').style.display = 'none';
+        
+        // Recargar después de 1 segundo
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } catch (e) {
+        showToast(`Error de conexión: ${e.message}`, 'error');
+      }
     }
   </script>
 </body>

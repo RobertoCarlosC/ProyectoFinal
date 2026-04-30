@@ -126,7 +126,7 @@
     async function cargarPedidos() {
       try {
         const user = getSession();
-        const res = await fetch(`/api/usuarios/${user.idUsuario}/pedidos`);
+        const res = await fetch(`/api/pedidos/${user.idUsuario}`);
         if (!res.ok) throw new Error();
         const pedidos = await res.json();
 
@@ -138,9 +138,10 @@
 
         let html = '';
         pedidos.forEach(p => {
-          const estadoBadge = `<span style="background:${p.estado === 'Entregado' ? '#22c55e' : 'var(--red)'};color:var(--white);padding:0.25rem 0.6rem;border-radius:2px;font-size:0.7rem;font-family:var(--font-cond);letter-spacing:0.06em;text-transform:uppercase;">${escapeHtml(p.estado)}</span>`;
+          const estadoColor = p.estado === 'Entregado' ? '#22c55e' : (p.estado === 'Enviado' || p.estado === 'En reparto' ? '#3b82f6' : 'var(--red)');
+          const estadoBadge = `<span style="background:${estadoColor};color:var(--white);padding:0.25rem 0.6rem;border-radius:2px;font-size:0.7rem;font-family:var(--font-cond);letter-spacing:0.06em;text-transform:uppercase;">${escapeHtml(p.estado)}</span>`;
           html += `
-            <div class="pedido-card-mini" onclick="verDetallePedido(${p.idPedido})">
+            <div class="pedido-card-mini" onclick="verDetallePedido(${p.idPedido})" style="cursor:pointer;">
               <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:0.5rem;">
                 <strong style="font-family:var(--font-cond);letter-spacing:0.08em;color:var(--white);">#${p.idPedido}</strong>
                 ${estadoBadge}
@@ -152,7 +153,9 @@
 
         lista.innerHTML = html;
       } catch (e) {
-        showToast('Error al cargar pedidos', 'error');
+        console.error('Error cargando pedidos:', e);
+        const lista = document.getElementById('pedidos-lista');
+        lista.innerHTML = '<p style="color:var(--smoke);text-align:center;font-family:var(--font-cond);font-size:13px;">Error al cargar pedidos</p>';
       }
     }
 
