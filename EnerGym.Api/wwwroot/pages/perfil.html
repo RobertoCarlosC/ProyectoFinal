@@ -129,6 +129,7 @@
       }
       await cargarPerfil();
       await cargarPedidos();
+      await cargarMisMensajes();
     });
 
     async function cargarPerfil() {
@@ -266,6 +267,86 @@
         document.getElementById('pwd-confirmar').value = '';
       } catch (e) {
         showToast(e.message, 'error');
+      }
+    }
+
+    async function enviarMensajeSoporte() {
+      const user = getSession();
+      const asunto = document.getElementById('soporte-asunto').value.trim();
+      const mensaje = document.getElementById('soporte-mensaje').value.trim();
+
+      if (!asunto || !mensaje) {
+        showToast('Completa el asunto y el mensaje', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/mensajes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            idUsuario: user.idUsuario,
+            nombre: user.nombre,
+            email: user.email,
+            asunto,
+            mensaje
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Error al enviar');
+
+        showToast('Mensaje enviado correctamente ✓', 'success');
+        document.getElementById('soporte-asunto').value = '';
+        document.getElementById('soporte-mensaje').value = '';
+        await cargarMisMensajes();
+      } catch (e) {
+        showToast(e.message, 'error');
+      }
+    }
+
+    async function cargarMisMensajes() {
+      try {
+        const user = getSession();
+        const res = await fetch(`/api/mensajes/usuario/${user.idUsuario}`);
+        if (!res.ok) throw new Error();
+        const mensajes = await res.json();
+
+        const lista = document.getElementById('mis-mensajes-lista');
+        if (mensajes.length === 0) {
+          lista.innerHTML = '<p style="color:var(--smoke);font-family:var(--font-body);font-size:0.9rem;">No has enviado ningún mensaje aún.</p>';
+          return;
+        }
+
+        let html = '';
+        mensajes.forEach(m => {
+          const estadoBadge = m.respondido
+            ? `<span style="background:#22c55e;color:var(--white);padding:0.25rem 0.6rem;border-radius:2px;font-size:0.7rem;font-family:var(--font-cond);letter-spacing:0.06em;text-transform:uppercase;">Respondido</span>`
+            : (m.leido
+              ? `<span style="background:var(--iron);color:var(--smoke);padding:0.25rem 0.6rem;border-radius:2px;font-size:0.7rem;font-family:var(--font-cond);letter-spacing:0.06em;text-transform:uppercase;">Leído</span>`
+              : `<span style="background:var(--red);color:var(--white);padding:0.25rem 0.6rem;border-radius:2px;font-size:0.7rem;font-family:var(--font-cond);letter-spacing:0.06em;text-transform:uppercase;">Enviado</span>`);
+
+          const respuestaHtml = m.respuesta
+            ? `<div style="background:var(--oscuro);border-left:2px solid var(--red);padding:0.75rem 1rem;margin-top:0.75rem;border-radius:0 2px 2px 0;">
+                 <div style="font-family:var(--font-cond);font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--red);margin-bottom:0.35rem;">Respuesta del equipo</div>
+                 <div style="color:var(--white);font-size:0.85rem;font-family:var(--font-body);line-height:1.5;">${escapeHtml(m.respuesta)}</div>
+               </div>`
+            : '';
+
+          html += `
+            <div style="border-bottom:1px solid var(--iron);padding:1rem 0;">
+              <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:0.5rem;gap:0.75rem;">
+                <strong style="font-family:var(--font-cond);letter-spacing:0.05em;color:var(--white);font-size:0.95rem;">${escapeHtml(m.asunto)}</strong>
+                ${estadoBadge}
+              </div>
+              <div style="color:var(--smoke);font-size:0.85rem;margin-bottom:0.5rem;font-family:var(--font-body);line-height:1.5;">${escapeHtml(m.mensaje)}</div>
+              ${respuestaHtml}
+              <div style="color:var(--smoke);font-size:0.75rem;font-family:var(--font-cond);margin-top:0.5rem;">${new Date(m.fecha + 'T00:00:00').toLocaleDateString('es-ES', { day:'numeric', month:'short', year:'numeric' })}</div>
+            </div>`;
+        });
+        lista.innerHTML = html;
+      } catch (e) {
+        console.error(e);
       }
     }
 

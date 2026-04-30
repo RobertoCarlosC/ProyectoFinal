@@ -298,5 +298,10 @@ namespace EnerGym.Models
         public string Asunto { get; set; } = "";
         public string Mensaje { get; set; } = "";
     }
+
+    public class ResponderMensajeDto
+    {
+        public string Respuesta { get; set; } = "";
+    }
 }
 

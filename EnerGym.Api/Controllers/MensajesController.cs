@@ -50,7 +50,7 @@ namespace EnerGym.Controllers
                 conn.Open();
 
                 var cmd = new SqlCommand(
-                    "SELECT IdMensaje, IdUsuario, Nombre, Email, Asunto, Mensaje, Fecha, Leido, Respondido FROM MensajesSoporte ORDER BY Fecha DESC",
+                    "SELECT IdMensaje, IdUsuario, Nombre, Email, Asunto, Mensaje, Fecha, Leido, Respondido, Respuesta FROM MensajesSoporte ORDER BY Fecha DESC",
                     conn);
 
                 var mensajes = new List<object>();
@@ -67,7 +67,8 @@ namespace EnerGym.Controllers
                         mensaje = reader["Mensaje"].ToString(),
                         fecha = ((DateTime)reader["Fecha"]).ToString("yyyy-MM-dd HH:mm:ss"),
                         leido = (bool)reader["Leido"],
-                        respondido = (bool)reader["Respondido"]
+                        respondido = (bool)reader["Respondido"],
+                        respuesta = reader["Respuesta"]?.ToString()
                     });
                 }
 
@@ -88,7 +89,7 @@ namespace EnerGym.Controllers
                 conn.Open();
 
                 var cmd = new SqlCommand(
-                    "SELECT IdMensaje, Asunto, Mensaje, Fecha, Leido, Respondido FROM MensajesSoporte WHERE IdUsuario = @IdUsuario ORDER BY Fecha DESC",
+                    "SELECT IdMensaje, Asunto, Mensaje, Fecha, Leido, Respondido, Respuesta FROM MensajesSoporte WHERE IdUsuario = @IdUsuario ORDER BY Fecha DESC",
                     conn);
                 cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
 
@@ -103,11 +104,36 @@ namespace EnerGym.Controllers
                         mensaje = reader["Mensaje"].ToString(),
                         fecha = ((DateTime)reader["Fecha"]).ToString("yyyy-MM-dd HH:mm:ss"),
                         leido = (bool)reader["Leido"],
-                        respondido = (bool)reader["Respondido"]
+                        respondido = (bool)reader["Respondido"],
+                        respuesta = reader["Respuesta"]?.ToString()
                     });
                 }
 
                 return Ok(mensajes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        [HttpPut("{idMensaje:int}/responder")]
+        public IActionResult ResponderMensaje(int idMensaje, [FromBody] ResponderMensajeDto dto)
+        {
+            try
+            {
+                using var conn = _db.GetConnection();
+                conn.Open();
+
+                var cmd = new SqlCommand(
+                    "UPDATE MensajesSoporte SET Respuesta = @Respuesta, Respondido = 1 WHERE IdMensaje = @IdMensaje",
+                    conn);
+                cmd.Parameters.AddWithValue("@IdMensaje", idMensaje);
+                cmd.Parameters.AddWithValue("@Respuesta", dto.Respuesta ?? (object)DBNull.Value);
+                int filas = cmd.ExecuteNonQuery();
+
+                if (filas == 0) return NotFound(new { error = "Mensaje no encontrado" });
+                return Ok(new { message = "Respuesta guardada correctamente" });
             }
             catch (Exception ex)
             {

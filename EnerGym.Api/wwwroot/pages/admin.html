@@ -189,6 +189,10 @@
       <div class="admin-nav-item" onclick="showTab('usuarios', this)">
         <span>👥</span><span>Usuarios</span>
       </div>
+      <div class="admin-nav-item" onclick="showTab('mensajes', this)">
+        <span>✉️</span><span>Mensajes</span>
+        <span id="badge-mensajes" style="display:none;background:var(--rojo);color:var(--blanco);font-size:0.6rem;padding:0.1rem 0.4rem;border-radius:2px;margin-left:auto;font-family:'Barlow Condensed',sans-serif;">0</span>
+      </div>
     </nav>
 
     <div class="sidebar-bottom">
@@ -414,6 +418,49 @@
       </div>
     </div>
 
+    <!-- ===== TAB MENSAJES ===== -->
+    <div class="tab-content reveal-scale" id="tab-mensajes">
+      <div class="admin-header">
+        <h1 class="admin-page-title">Mensajes de soporte</h1>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;">
+        <div style="background:var(--gris);border:1px solid var(--borde);padding:1rem;border-radius:4px;">
+          <div style="color:var(--texto2);font-size:0.85rem;margin-bottom:0.5rem;">Total Mensajes</div>
+          <div id="stat-msg-total" style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--naranja);">0</div>
+        </div>
+        <div style="background:var(--gris);border:1px solid var(--borde);padding:1rem;border-radius:4px;">
+          <div style="color:var(--texto2);font-size:0.85rem;margin-bottom:0.5rem;">No leídos</div>
+          <div id="stat-msg-noleidos" style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#ef4444;">0</div>
+        </div>
+        <div style="background:var(--gris);border:1px solid var(--borde);padding:1rem;border-radius:4px;">
+          <div style="color:var(--texto2);font-size:0.85rem;margin-bottom:0.5rem;">Respondidos</div>
+          <div id="stat-msg-respondidos" style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#22c55e;">0</div>
+        </div>
+      </div>
+
+      <div style="background:var(--gris);border:1px solid var(--borde);overflow-x:auto;">
+        <div id="mensajes-loading" class="text-center py-4">
+          <div class="spinner-border text-warning" role="status"></div>
+        </div>
+        <table class="admin-table" id="mensajes-table" style="display:none;">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Email</th>
+              <th>Asunto</th>
+              <th>Mensaje</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="mensajes-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 
   
@@ -446,6 +493,7 @@
     let productosCache = [];
     let deleteId = null;
     let categoriasCache = [];
+    let mensajesCache = [];
 
     // ===== TABS =====
     function showTab(name, navEl) {
@@ -855,6 +903,167 @@
       if (name === 'usuarios') loadUsuarios();
       if (name === 'productos') loadProductos();
       if (name === 'pedidos') loadPedidosAdmin();
+      if (name === 'mensajes') loadMensajesAdmin();
+    }
+
+    // ===== MENSAJES =====
+    async function loadMensajesAdmin() {
+      try {
+        document.getElementById('mensajes-loading').style.display = 'block';
+        document.getElementById('mensajes-table').style.display = 'none';
+
+        const res = await fetch(`${API_BASE}/mensajes`);
+        if (!res.ok) throw new Error('Error al cargar mensajes');
+        const mensajes = await res.json();
+
+        mensajesCache = mensajes;
+        renderMensajesTable(mensajes);
+        actualizarStatsMensajes(mensajes);
+        await actualizarBadgeMensajes();
+
+        document.getElementById('mensajes-loading').style.display = 'none';
+        document.getElementById('mensajes-table').style.display = 'table';
+      } catch (e) {
+        console.error(e);
+        document.getElementById('mensajes-loading').innerHTML =
+          `<p style="color:var(--texto2);padding:1rem;">Error al cargar mensajes: ${e.message}</p>`;
+      }
+    }
+
+    function renderMensajesTable(mensajes) {
+      const tbody = document.getElementById('mensajes-tbody');
+      if (!mensajes || mensajes.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--texto2);padding:2rem;">Sin mensajes</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = mensajes.map(m => {
+        const estado = m.respondido
+          ? { text: 'Respondido', color: '#22c55e', bg: 'rgba(34,197,94,0.12)' }
+          : (m.leido
+            ? { text: 'Leído', color: 'var(--texto2)', bg: 'rgba(255,255,255,0.05)' }
+            : { text: 'Nuevo', color: '#ef4444', bg: 'rgba(239,68,68,0.12)' });
+        return `
+          <tr style="${m.leido ? '' : 'background:rgba(255,85,0,0.03);'}">
+            <td style="color:var(--texto2);font-weight:600;">#${m.idMensaje}</td>
+            <td style="color:var(--blanco);">${escapeHtml(m.nombre)}</td>
+            <td style="color:var(--texto2);font-size:0.85rem;">${escapeHtml(m.email)}</td>
+            <td style="color:var(--blanco);font-weight:600;">${escapeHtml(m.asunto)}</td>
+            <td style="color:var(--texto2);font-size:0.85rem;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(m.mensaje)}</td>
+            <td style="color:var(--texto2);font-size:0.8rem;">${new Date(m.fecha).toLocaleDateString('es-ES', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</td>
+            <td style="text-align:center;">
+              <span style="display:inline-flex;align-items:center;gap:0.3rem;background:${estado.bg};color:${estado.color};padding:0.35rem 0.7rem;border-radius:2px;font-size:0.75rem;font-weight:600;font-family:'Barlow Condensed',sans-serif;">
+                ${estado.text}
+              </span>
+            </td>
+            <td>
+              <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
+                ${!m.leido ? `<button onclick="marcarMensajeLeido(${m.idMensaje})" class="btn-dark-sm" style="padding:0.35rem 0.6rem;font-size:0.75rem;">👁️ Leído</button>` : ''}
+                ${!m.respondido ? `<button onclick="abrirModalResponder(${m.idMensaje})" class="btn-dark-sm" style="padding:0.35rem 0.6rem;font-size:0.75rem;">✉️ Responder</button>` : `<button onclick="abrirModalResponder(${m.idMensaje})" class="btn-dark-sm" style="padding:0.35rem 0.6rem;font-size:0.75rem;">👁️ Ver respuesta</button>`}
+                <button onclick="eliminarMensaje(${m.idMensaje})" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--rojo);font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;padding:0.35rem 0.6rem;cursor:pointer;border-radius:2px;transition:all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.2)'" onmouseout="this.style.background='rgba(239,68,68,0.1)'">🗑️</button>
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    function actualizarStatsMensajes(mensajes) {
+      const total = mensajes.length;
+      const noLeidos = mensajes.filter(m => !m.leido).length;
+      const respondidos = mensajes.filter(m => m.respondido).length;
+      document.getElementById('stat-msg-total').textContent = total;
+      document.getElementById('stat-msg-noleidos').textContent = noLeidos;
+      document.getElementById('stat-msg-respondidos').textContent = respondidos;
+    }
+
+    async function actualizarBadgeMensajes() {
+      try {
+        const res = await fetch(`${API_BASE}/mensajes/no-leidos/count`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const badge = document.getElementById('badge-mensajes');
+        if (data.count > 0) {
+          badge.textContent = data.count;
+          badge.style.display = 'inline-block';
+        } else {
+          badge.style.display = 'none';
+        }
+      } catch (e) {}
+    }
+
+    async function marcarMensajeLeido(idMensaje) {
+      try {
+        const res = await fetch(`${API_BASE}/mensajes/${idMensaje}/leido`, { method: 'PUT' });
+        if (!res.ok) throw new Error();
+        showToast('Mensaje marcado como leído', 'success');
+        await loadMensajesAdmin();
+      } catch (e) {
+        showToast('Error al marcar como leído', 'error');
+      }
+    }
+
+    let mensajeRespondiendoId = null;
+
+    function abrirModalResponder(idMensaje) {
+      const mensaje = mensajesCache.find(m => m.idMensaje === idMensaje);
+      if (!mensaje) return;
+      mensajeRespondiendoId = idMensaje;
+      document.getElementById('responder-asunto').textContent = escapeHtml(mensaje.asunto);
+      document.getElementById('responder-mensaje').textContent = escapeHtml(mensaje.mensaje);
+      document.getElementById('responder-datos-cliente').textContent = `${escapeHtml(mensaje.nombre)} · ${escapeHtml(mensaje.email)}`;
+      document.getElementById('respuesta-texto').value = mensaje.respuesta || '';
+      document.getElementById('modal-responder').style.display = 'flex';
+    }
+
+    function cerrarModalResponder() {
+      document.getElementById('modal-responder').style.display = 'none';
+      mensajeRespondiendoId = null;
+      document.getElementById('respuesta-texto').value = '';
+    }
+
+    async function guardarRespuesta() {
+      if (!mensajeRespondiendoId) return;
+      const texto = document.getElementById('respuesta-texto').value.trim();
+      if (!texto) {
+        showToast('Escribe una respuesta', 'error');
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE}/mensajes/${mensajeRespondiendoId}/responder`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ respuesta: texto })
+        });
+        if (!res.ok) throw new Error();
+        showToast('Respuesta guardada ✓', 'success');
+        cerrarModalResponder();
+        await loadMensajesAdmin();
+      } catch (e) {
+        showToast('Error al guardar la respuesta', 'error');
+      }
+    }
+
+    async function marcarMensajeRespondido(idMensaje) {
+      try {
+        const res = await fetch(`${API_BASE}/mensajes/${idMensaje}/respondido`, { method: 'PUT' });
+        if (!res.ok) throw new Error();
+        showToast('Mensaje marcado como respondido', 'success');
+        await loadMensajesAdmin();
+      } catch (e) {
+        showToast('Error al marcar como respondido', 'error');
+      }
+    }
+
+    async function eliminarMensaje(idMensaje) {
+      if (!confirm('¿Eliminar este mensaje?')) return;
+      try {
+        const res = await fetch(`${API_BASE}/mensajes/${idMensaje}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error();
+        showToast('Mensaje eliminado', 'success');
+        await loadMensajesAdmin();
+      } catch (e) {
+        showToast('Error al eliminar', 'error');
+      }
     }
 
     async function loadChartVentas() {
@@ -933,6 +1142,7 @@
     loadCategorias();
     loadPedidosAdmin();
     loadChartVentas();
+    actualizarBadgeMensajes();
   </script>
 
   <!-- Modal para detalles de pedidos -->
@@ -1022,6 +1232,33 @@
       </div>
 
       <button onclick="cerrarModalDetalle()" class="btn-dark-sm" style="width:100%;margin-top:1rem;padding:0.75rem;">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- Modal responder mensaje -->
+  <div id="modal-responder" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2100;align-items:center;justify-content:center;padding:24px;">
+    <div style="background:var(--gris);border:1px solid var(--borde);max-width:600px;width:100%;padding:2rem;border-radius:4px;">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:1.5rem;">
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;color:var(--blanco);">✉️ Responder mensaje</h3>
+        <button onclick="cerrarModalResponder()" style="background:transparent;border:none;font-size:1.5rem;color:var(--texto2);cursor:pointer;">✕</button>
+      </div>
+
+      <div style="background:var(--oscuro);padding:1rem;border-radius:2px;margin-bottom:1.5rem;border-left:3px solid var(--naranja);">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--texto2);margin-bottom:0.5rem;">Mensaje del cliente</div>
+        <div id="responder-asunto" style="font-weight:600;color:var(--blanco);margin-bottom:0.5rem;"></div>
+        <div id="responder-mensaje" style="color:var(--texto2);font-size:0.9rem;line-height:1.5;"></div>
+        <div id="responder-datos-cliente" style="color:var(--texto2);font-size:0.8rem;margin-top:0.75rem;font-family:'Barlow Condensed',sans-serif;"></div>
+      </div>
+
+      <div style="margin-bottom:1.5rem;">
+        <label style="color:var(--texto2);font-size:0.9rem;margin-bottom:0.5rem;display:block;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase;">Tu respuesta</label>
+        <textarea id="respuesta-texto" style="width:100%;background:var(--oscuro);border:1px solid var(--borde);color:var(--blanco);padding:0.75rem;border-radius:2px;resize:vertical;font-family:'Barlow',sans-serif;min-height:120px;" placeholder="Escribe aquí tu respuesta para el cliente..."></textarea>
+      </div>
+
+      <div style="display:flex;gap:0.75rem;">
+        <button onclick="cerrarModalResponder()" class="btn-dark-sm" style="flex:1;padding:0.75rem;">Cancelar</button>
+        <button onclick="guardarRespuesta()" class="btn-fire" style="flex:1;clip-path:none;border-radius:2px;padding:0.75rem;">💾 Guardar respuesta</button>
+      </div>
     </div>
   </div>
 

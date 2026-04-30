@@ -242,7 +242,15 @@ BEGIN
     );
     PRINT '✓ Tabla MensajesSoporte creada.';
 END
-ELSE PRINT '– Tabla MensajesSoporte ya existe.';
+ELSE
+BEGIN
+    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='MensajesSoporte' AND COLUMN_NAME='Respuesta')
+    BEGIN
+        ALTER TABLE MensajesSoporte ADD Respuesta NVARCHAR(2000) NULL;
+        PRINT '✓ Columna Respuesta añadida a MensajesSoporte.';
+    END
+    PRINT '– Tabla MensajesSoporte ya existe.';
+END
 GO
 
 
