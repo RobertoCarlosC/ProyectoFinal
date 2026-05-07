@@ -21,7 +21,6 @@
       <button class="auth-tab" onclick="switchTab('register')">Registrarse</button>
     </div>
 
-    
     <form class="auth-form active" id="form-login" onsubmit="handleLogin(event)">
       <div class="form-group">
         <label>Email</label>
@@ -35,7 +34,6 @@
       <div class="auth-msg" id="login-msg"></div>
     </form>
 
-    
     <form class="auth-form" id="form-register" onsubmit="handleRegister(event)">
       <div class="form-group">
         <label>Nombre</label>
@@ -64,7 +62,6 @@
 
 <script src="/js/app.js"></script>
 <script>
-  // Si ya hay sesión activa, redirigir
   const sesionActiva = getSession();
   if (sesionActiva) {
     window.location.href = sesionActiva.idRol === 1 ? '/pages/admin.html' : '/index.html';
@@ -96,7 +93,7 @@
     const password = document.getElementById('login-password').value;
 
     try {
-      const res  = await fetch(`${API_BASE}/login`, {
+      const res  = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -106,9 +103,9 @@
         showMsg('login-msg', data.error || 'Email o contraseña incorrectos.', 'error');
         return;
       }
-      setSession(data);
+      setSession(data.data || data);
       await updateCartBadge();
-      window.location.href = data.idRol === 1 ? '/pages/admin.html' : '/index.html';
+      window.location.href = (data.data?.idRol || data.idRol) === 1 ? '/pages/admin.html' : '/index.html';
     } catch (err) {
       showMsg('login-msg', 'No se pudo conectar con el servidor.', 'error');
     } finally {
@@ -128,7 +125,7 @@
     const password = document.getElementById('reg-password').value;
 
     try {
-      const res  = await fetch(`${API_BASE}/register`, {
+      const res  = await fetch(`${API_BASE}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nombre, email, password })

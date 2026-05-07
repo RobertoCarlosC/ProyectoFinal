@@ -10,8 +10,10 @@ namespace EnerGym
 
         public Database(IConfiguration config)
         {
-            _connectionString = config.GetConnectionString("DefaultConnection")
-                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' no encontrada en appsettings.json");
+            var cs = config.GetConnectionString("DefaultConnection");
+            if (string.IsNullOrWhiteSpace(cs))
+                throw new InvalidOperationException("Connection string 'DefaultConnection' no encontrada. Configure appsettings.json o la variable de entorno DOTNET_ConnectionStrings__DefaultConnection.");
+            _connectionString = cs;
         }
 
         

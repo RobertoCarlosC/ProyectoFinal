@@ -98,6 +98,7 @@
   </main>
 
   <div id="toast-container"></div>
+  <div id="footer-placeholder"></div>
 
   <script src="/js/app.js"></script>
   <script>
@@ -105,6 +106,7 @@
 
     document.addEventListener('DOMContentLoaded', async () => {
       injectNavbar('perfil');
+      injectFooter();
       const user = getSession();
       if (!user) {
         window.location.href = '/pages/login.html';
@@ -144,20 +146,18 @@
       const p = data.pedido;
       const productos = data.productos || [];
 
-      // Header
       document.getElementById('pedido-numero').textContent = `#${p.idPedido}`;
       const estadoColor = p.estado === 'Entregado' ? '#22c55e' : (p.estado === 'Enviado' ? '#3b82f6' : 'var(--red)');
       document.getElementById('pedido-estado').innerHTML =
         `<span style="background:${estadoColor};color:var(--white);padding:0.35rem 0.75rem;border-radius:2px;font-size:0.75rem;font-family:var(--font-cond);letter-spacing:0.08em;text-transform:uppercase;">${escapeHtml(p.estado)}</span>`;
       document.getElementById('pedido-fecha').textContent = new Date(p.fecha).toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' });
 
-      // Productos
       let html = '';
       let subtotal = 0;
       productos.forEach(prod => {
         const itemSubtotal = prod.precio * prod.cantidad;
         subtotal += itemSubtotal;
-        const img = prod.imagen || 'https://via.placeholder.com/80?text=Sin+imagen';
+        const img = isValidImageUrl(prod.imagen) ? prod.imagen : 'https://via.placeholder.com/80?text=Sin+imagen';
         html += `
           <div style="display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--iron);align-items:center;">
             <img src="${escapeHtml(img)}" alt="${escapeHtml(prod.nombreProducto)}" style="width:72px;height:72px;object-fit:cover;border-radius:4px;background:var(--iron);flex-shrink:0;">
@@ -171,7 +171,6 @@
       });
       document.getElementById('pedido-productos').innerHTML = html || '<p style="color:var(--smoke);">No hay productos en este pedido.</p>';
 
-      // Resumen
       const envio = subtotal > 50 ? 0 : 5.99;
       const impuestos = (subtotal + envio) * 0.21;
       const total = subtotal + envio + impuestos;
@@ -184,7 +183,6 @@
       document.getElementById('res-direccion').textContent = p.direccionEnvio || 'No especificada';
       document.getElementById('res-pago').textContent = p.metodoPago || 'No especificado';
 
-      // Mostrar contenido, ocultar skeleton
       document.getElementById('skeleton-pedido').style.display = 'none';
       document.getElementById('contenido-pedido').style.display = 'grid';
     }

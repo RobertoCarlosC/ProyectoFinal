@@ -1,5 +1,3 @@
-
-
 const API_BASE = '/api';
 
 function escapeHtml(text) {
@@ -10,6 +8,11 @@ function escapeHtml(text) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+function isValidImageUrl(url) {
+  if (!url) return false;
+  return /^https?:\/\//i.test(String(url));
 }
 
 function getSession() {
@@ -39,7 +42,6 @@ function logout() {
   window.location.href = '/index.html';
 }
 
-
 function showToast(msg, type = 'info') {
   let container = document.getElementById('toast-container');
   if (!container) {
@@ -58,7 +60,6 @@ function showToast(msg, type = 'info') {
     setTimeout(() => toast.remove(), 300);
   }, 3000);
 }
-
 
 function updateNavbar() {
   const user = getSession();
@@ -93,8 +94,7 @@ function updateNavbar() {
   }
 }
 
-
-/** Reemplaza #navbar-placeholder por cabecera EnerGym (mismo diseño que tienda/index). */
+/** Reemplaza #navbar-placeholder por cabecera EnerGym. */
 function injectNavbar(activePage) {
   window._activePage = activePage;
   const ph = document.getElementById('navbar-placeholder');
@@ -141,15 +141,68 @@ function injectNavbar(activePage) {
   }
 }
 
+/** Reemplaza #footer-placeholder por footer EnerGym. */
+function injectFooter() {
+  const ph = document.getElementById('footer-placeholder');
+  if (!ph) return;
+  ph.outerHTML = `
+<footer class="footer">
+<div class="footer-top-bar">
+  <div class="footer-logo"><span>EnerGym</span></div>
+  <div class="social-links">
+    <a href="https://www.instagram.com/energym164"><i class="fa-brands fa-instagram"></i></a>
+    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+    <a href="#"><i class="fa-brands fa-pinterest"></i></a>
+  </div>
+</div>
+<div class="footer-divider"></div>
+<div class="footer-main reveal">
+  <div class="footer-about">
+    <p>Suplementación de élite para hombres que no piden permiso. Calidad sin concesiones, resultados sin excusas.</p>
+  </div>
+  <div class="footer-links">
+    <h4>NAVEGACIÓN</h4>
+    <a href="/index.html">Inicio</a>
+    <a href="/pages/tienda.html">Productos</a>
+    <a href="#">Nosotros</a>
+  </div>
+  <div class="footer-links">
+    <h4>AYUDA</h4>
+    <a href="#">Preguntas frecuentes</a>
+    <a href="#">Envíos y entregas</a>
+    <a href="#">Devoluciones</a>
+    <a href="#">Política de privacidad</a>
+  </div>
+  <div class="footer-newsletter">
+    <h4>NEWSLETTER</h4>
+    <p>Suscríbete y recibe 10% OFF en tu primera compra.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="tu@correo.com">
+      <button>→</button>
+    </div>
+  </div>
+</div>
+<div class="footer-divider"></div>
+<div class="footer-bottom">
+  <p>© 2026 ENERGYM. TODOS LOS DERECHOS RESERVADOS.</p>
+  <div class="payment-icons">
+    <i class="fa-brands fa-cc-visa"></i>
+    <i class="fa-brands fa-cc-mastercard"></i>
+    <i class="fa-brands fa-cc-paypal"></i>
+    <i class="fa-brands fa-apple-pay"></i>
+  </div>
+</div>
+</footer>`;
+}
+
 function toggleMobileNav() {
   document.querySelector('.nav-left')?.classList.toggle('nav-open');
 }
 
-
 function formatPrice(price) {
   return Number(price).toFixed(2).replace('.', ',') + ' €';
 }
-
 
 async function updateCartBadge() {
   const user = getSession();
@@ -166,7 +219,6 @@ async function updateCartBadge() {
     if (badge) badge.textContent = count;
   } catch (e) {}
 }
-
 
 async function addToCart(idProducto) {
   const user = getSession();
@@ -189,7 +241,6 @@ async function addToCart(idProducto) {
     showToast('Error de conexión con el servidor', 'error');
   }
 }
-
 
 async function toggleLike(idProducto, btn) {
   const user = getSession();
@@ -214,17 +265,16 @@ async function toggleLike(idProducto, btn) {
   }
 }
 
-
 function renderProductCard(p) {
   const user   = getSession();
-  const stock  = p.stock ?? p.Stock ?? 0;
-  const imagen          = p.imagen || p.Imagen || '';
-  const nombre          = escapeHtml(p.nombre || p.Nombre || '');
-  const descripcion     = escapeHtml(p.descripcion || p.Descripcion || '');
-  const precio          = p.precio ?? p.Precio ?? 0;
-  const idProducto      = p.idProducto || p.IdProducto;
-  const nombreCategoria = escapeHtml(p.nombreCategoria || p.NombreCategoria || '');
-  const liked           = p.tieneLike || p.TieneLike || false;
+  const stock  = p.stock ?? 0;
+  const imagen = isValidImageUrl(p.imagen) ? p.imagen : '';
+  const nombre = escapeHtml(p.nombre || '');
+  const descripcion = escapeHtml(p.descripcion || '');
+  const precio = p.precio ?? 0;
+  const idProducto = p.idProducto;
+  const nombreCategoria = escapeHtml(p.nombreCategoria || '');
+  const liked = p.tieneLike || false;
 
   let badge = '';
   if (stock === 0)     badge = `<div class="prod-badge sale">AGOTADO</div>`;
@@ -266,7 +316,6 @@ function renderProductCard(p) {
   </div>`;
 }
 
-
 /* ============================================================
    ANIMACIONES ENERGYM — Motion Engine v1
    ============================================================ */
@@ -274,7 +323,6 @@ function renderProductCard(p) {
 (function() {
   'use strict';
 
-  // ---- IntersectionObserver Reveal System ----
   function initRevealObserver() {
     const revealSelectors = [
       '.reveal', '.reveal-left', '.reveal-right',
@@ -298,7 +346,6 @@ function renderProductCard(p) {
     elements.forEach(el => observer.observe(el));
   }
 
-  // ---- Navbar scroll behaviour ----
   function initNavbarScroll() {
     const navbar = document.querySelector('.navbar');
     if (!navbar) return;
@@ -310,21 +357,16 @@ function renderProductCard(p) {
       if (!ticking) {
         requestAnimationFrame(() => {
           const currentY = window.scrollY;
-
-          // Hide/show on scroll direction
           if (currentY > lastY && currentY > 120) {
             navbar.classList.add('nav-hidden');
           } else {
             navbar.classList.remove('nav-hidden');
           }
-
-          // Solid background after scrolling
           if (currentY > 60) {
             navbar.classList.add('nav-solid');
           } else {
             navbar.classList.remove('nav-solid');
           }
-
           lastY = currentY;
           ticking = false;
         });
@@ -333,7 +375,6 @@ function renderProductCard(p) {
     }, { passive: true });
   }
 
-  // ---- Hero parallax ----
   function initHeroParallax() {
     const hero = document.querySelector('.hero');
     if (!hero) return;
@@ -361,7 +402,6 @@ function renderProductCard(p) {
     }, { passive: true });
   }
 
-  // ---- Cursor glow (desktop only) ----
   function initCursorGlow() {
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
     const glow = document.createElement('div');
@@ -395,20 +435,18 @@ function renderProductCard(p) {
     });
   }
 
-  // ---- Cart badge pulse on update ----
   const _origUpdateCartBadge = window.updateCartBadge;
   window.updateCartBadge = async function(...args) {
     const result = await _origUpdateCartBadge.apply(this, args);
     const badge = document.querySelector('.cart-count');
     if (badge) {
       badge.classList.remove('pulse');
-      void badge.offsetWidth; // force reflow
+      void badge.offsetWidth;
       badge.classList.add('pulse');
     }
     return result;
   };
 
-  // ---- Auto-init on DOM ready ----
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       initRevealObserver();
@@ -423,6 +461,5 @@ function renderProductCard(p) {
     initCursorGlow();
   }
 
-  // Re-init reveals after dynamic content (e.g. product grids)
   window.initRevealObserver = initRevealObserver;
 })();
